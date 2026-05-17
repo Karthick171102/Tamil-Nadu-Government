@@ -1,0 +1,401 @@
+@import url('https://fonts.googleapis.com/css2?family=Anek+Tamil:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+@source "../src";
+
+/* Dynamic Anek Tamil Font Override when lang-ta is applied */
+.lang-ta,
+.lang-ta body,
+.lang-ta h1,
+.lang-ta h2,
+.lang-ta h3,
+.lang-ta h4,
+.lang-ta h5,
+.lang-ta h6,
+.lang-ta button,
+.lang-ta input,
+.lang-ta textarea,
+.lang-ta select,
+.lang-ta a,
+.lang-ta p,
+.lang-ta span,
+.lang-ta div {
+  font-family: 'Anek Tamil', sans-serif !important;
+}
+
+:root {
+  --bg-primary: #f9f7f4;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f0ede8;
+  --bg-glass: rgba(255, 255, 255, 0.7);
+  
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --text-tertiary: #9ca3af;
+  
+  --accent-primary: #005600;
+  --accent-secondary: #006600; /* slightly lighter for gradient */
+  --accent-glow: rgba(0, 86, 0, 0.3);
+  
+  --border-color: rgba(0, 0, 0, 0.08);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.4);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+  
+  --card-bg: #ffffff;
+  --card-border: rgba(0, 0, 0, 0.06);
+  --card-hover-border: rgba(0, 86, 0, 0.15);
+  --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  --card-hover-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
+  --radius-pill: 2px;
+  
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+
+  --grid-line: rgba(0, 0, 0, 0.06);
+}
+
+/* ── Dark Theme ────────────────────────────────────────────── */
+.dark {
+  --bg-primary: #0a0f0a;
+  --bg-secondary: #111811;
+  --bg-tertiary: #1a221a;
+  --bg-glass: rgba(15, 20, 15, 0.8);
+
+  --text-primary: #e8efe8;
+  --text-secondary: #9ca89c;
+  --text-tertiary: #5a665a;
+
+  --accent-primary: #00a800;
+  --accent-secondary: #00c000;
+  --accent-glow: rgba(0, 168, 0, 0.3);
+
+  --border-color: rgba(255, 255, 255, 0.08);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+
+  --card-bg: #111811;
+  --card-border: rgba(255, 255, 255, 0.06);
+  --card-hover-border: rgba(0, 168, 0, 0.25);
+  --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+  --card-hover-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+
+  --grid-line: rgba(255, 255, 255, 0.04);
+
+  color-scheme: dark;
+}
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+}
+
+.glass-panel {
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: var(--glass-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--glass-shadow);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-accent {
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  color: white;
+  padding: 12px 28px;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  font-size: 1rem;
+  transition: var(--transition-normal);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--accent-secondary) 0%, var(--accent-primary) 100%);
+  z-index: -1;
+  transition: opacity var(--transition-normal);
+  opacity: 0;
+}
+
+.btn-primary:hover::before {
+  opacity: 1;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--accent-glow);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text-primary);
+  padding: 12px 28px;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  font-size: 1rem;
+  border: 1px solid var(--border-color);
+  transition: var(--transition-normal);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-secondary:hover {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.dark .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Animations */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes pulse-glow {
+  0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+  70% { box-shadow: 0 0 0 15px rgba(59, 130, 246, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Hide scrollbars completely on all viewports */
+::-webkit-scrollbar {
+  width: 0px !important;
+  height: 0px !important;
+  display: none !important;
+}
+
+* {
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important;  /* IE and Edge */
+}
+
+*::-webkit-scrollbar {
+  width: 0px !important;
+  height: 0px !important;
+  display: none !important;
+}
+
+/* Fixed Grid Pattern Background */
+.grid-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-color: var(--bg-primary);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 30%, transparent 80%);
+  mask-image: linear-gradient(to bottom, black 0%, black 30%, transparent 80%);
+  transition: background-color 0.4s ease;
+}
+
+/* ── Dark mode overrides for Tailwind utility colors ───────── */
+/* Cards & surfaces */
+.dark .bg-white {
+  background-color: var(--card-bg) !important;
+}
+
+.dark .bg-gray-50 {
+  background-color: var(--bg-tertiary) !important;
+}
+
+/* Text */
+.dark .text-gray-900 {
+  color: var(--text-primary) !important;
+}
+
+.dark .text-gray-800 {
+  color: #d0d8d0 !important;
+}
+
+.dark .text-gray-700 {
+  color: var(--text-secondary) !important;
+}
+
+.dark .text-gray-600 {
+  color: #8a968a !important;
+}
+
+.dark .text-gray-500 {
+  color: #8a968a !important;
+}
+
+.dark .text-gray-400 {
+  color: #6b7a6b !important;
+}
+
+.dark .text-gray-300 {
+  color: #4a564a !important;
+}
+
+/* Borders */
+.dark .border-gray-200,
+.dark .border-gray-100 {
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+.dark .border-black\/6,
+.dark .border-black\/5,
+.dark .border-black\/8 {
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Shadows */
+.dark .shadow-\[0_4px_20px_rgba\(0\,0\,0\,0\.05\)\] {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Hover states */
+.dark .hover\:bg-gray-50:hover {
+  background-color: var(--bg-tertiary) !important;
+}
+
+.dark .hover\:bg-black\/5:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.dark .hover\:text-gray-900:hover {
+  color: var(--text-primary) !important;
+}
+
+/* Navbar dropdown & search overlay */
+.dark .bg-white\/95 {
+  background-color: rgba(17, 24, 17, 0.95) !important;
+}
+
+.dark .bg-white\/10 {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Pixel card & other white surfaces */
+.dark .bg-\[\#005600\]\/8 {
+  background-color: rgba(0, 168, 0, 0.12) !important;
+}
+
+/* Mobile menu */
+.dark .bg-gray-100 {
+  background-color: var(--bg-tertiary) !important;
+}
+
+/* PixelCard fix */
+.dark .hover\:bg-\[\#005600\]\/5:hover {
+  background-color: rgba(0, 168, 0, 0.08) !important;
+}
+
+/* ── Green text overrides for dark mode ─────────────────────── */
+.dark .text-\[\#005600\] {
+  color: #00c000 !important;
+}
+
+.dark .group-hover\:text-\[\#005600\]:hover,
+.dark .group:hover .group-hover\:text-\[\#005600\] {
+  color: #00e000 !important;
+}
+
+.dark .hover\:text-\[\#005600\]:hover {
+  color: #00e000 !important;
+}
+
+.dark .hover\:border-\[\#005600\]:hover {
+  border-color: #00c000 !important;
+}
+
+.dark .hover\:border-\[\#005600\]\/30:hover {
+  border-color: rgba(0, 192, 0, 0.3) !important;
+}
+
+.dark .bg-\[\#005600\]\/10 {
+  background-color: rgba(0, 168, 0, 0.15) !important;
+}
+
+.dark .hover\:bg-\[\#005600\]\/5:hover {
+  background-color: rgba(0, 168, 0, 0.1) !important;
+}
+
+/* PixelCard canvas — lower opacity in dark mode */
+.dark .pixel-canvas {
+  opacity: 0.15 !important;
+}
+
+/* Input fields in dark mode */
+.dark input,
+.dark textarea {
+  color: var(--text-primary) !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #5a665a !important;
+}
