@@ -4,12 +4,14 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Globe, ArrowUp } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import Loader from './components/Loader';
 import Home from './pages/Home';
 import ServicesHub from './pages/ServicesHub';
 import DepartmentsHub from './pages/DepartmentsHub';
 import SchemesHub from './pages/SchemesHub';
 import PlaceholderPage from './pages/PlaceholderPage';
 import NewsPage from './pages/NewsPage';
+import HelpPage from './pages/HelpPage';
 import { useLanguage } from './context/LanguageContext';
 
 const PageWrapper = ({ children }) => {
@@ -33,6 +35,7 @@ function App() {
   const [hideNavbar, setHideNavbar] = useState(false);
   const [footerVisibleHeight, setFooterVisibleHeight] = useState(0);
   const [isAtTop, setIsAtTop] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (mainRef.current) {
@@ -95,47 +98,58 @@ function App() {
   };
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden w-full relative">
-      <div className="grid-bg"></div>
-      <Navbar hide={hideNavbar} isAtTop={isAtTop} />
-      <main ref={mainRef} className="flex-1 overflow-y-auto w-full flex flex-col justify-between">
-        <div className="flex-grow">
-          <AnimatePresence mode="wait">
-            <Routes location={location} key={location.pathname}>
-              <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
-              <Route path="/services" element={<PageWrapper><ServicesHub /></PageWrapper>} />
-              <Route path="/departments" element={<PageWrapper><DepartmentsHub /></PageWrapper>} />
-              <Route path="/government" element={<PageWrapper><PlaceholderPage title={t('nav.government')} description={t('ph.desc.government')} /></PageWrapper>} />
-              <Route path="/documents" element={<PageWrapper><PlaceholderPage title={t('nav.documents')} description={t('ph.desc.documents')} /></PageWrapper>} />
-              <Route path="/schemes" element={<PageWrapper><SchemesHub /></PageWrapper>} />
-              <Route path="/news" element={<PageWrapper><NewsPage /></PageWrapper>} />
-              <Route path="/help" element={<PageWrapper><PlaceholderPage title={t('nav.help')} description={t('ph.desc.help')} /></PageWrapper>} />
-            </Routes>
-          </AnimatePresence>
-        </div>
-        <Footer />
-      </main>
-
-
-      {/* Floating Back to Top Button — anchored bottom 24px, center (slides up dynamically with the footer) */}
+    <>
       <AnimatePresence>
-        {showScrollTop && (
-          <motion.button
-            onClick={scrollToTop}
-            initial={{ opacity: 0, y: 30, x: '-50%' }}
-            animate={{ opacity: 1, y: 0, x: '-50%' }}
-            exit={{ opacity: 0, y: 30, x: '-50%' }}
-            whileHover={{ scale: 1.08, y: -2 }}
-            whileTap={{ scale: 0.92 }}
-            className="fixed left-1/2 z-[999] w-12 h-12 bg-white text-gray-700 hover:text-gray-900 rounded-full border border-gray-200 shadow-[0_10px_30px_rgba(0,0,0,0.08)] flex items-center justify-center cursor-pointer select-none transition-all duration-300"
-            style={{ bottom: `${24 + footerVisibleHeight}px` }}
-            aria-label="Back to Top"
-          >
-            <ArrowUp size={20} className="text-gray-500 hover:text-gray-900 transition-colors" />
-          </motion.button>
-        )}
+        {loading && <Loader onComplete={() => setLoading(false)} />}
       </AnimatePresence>
-    </div>
+
+      <motion.div
+        className="flex flex-col h-screen overflow-hidden w-full relative"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: loading ? 0 : 1 }}
+        transition={{ duration: 0.4, delay: 0.1 }}
+      >
+        <div className="grid-bg"></div>
+        <Navbar hide={hideNavbar} isAtTop={isAtTop} />
+        <main ref={mainRef} className="flex-1 overflow-y-auto w-full flex flex-col justify-between">
+          <div className="flex-grow">
+            <AnimatePresence mode="wait">
+              <Routes location={location} key={location.pathname}>
+                <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
+                <Route path="/services" element={<PageWrapper><ServicesHub /></PageWrapper>} />
+                <Route path="/departments" element={<PageWrapper><DepartmentsHub /></PageWrapper>} />
+                <Route path="/government" element={<PageWrapper><PlaceholderPage title={t('nav.government')} description={t('ph.desc.government')} /></PageWrapper>} />
+                <Route path="/documents" element={<PageWrapper><PlaceholderPage title={t('nav.documents')} description={t('ph.desc.documents')} /></PageWrapper>} />
+                <Route path="/schemes" element={<PageWrapper><SchemesHub /></PageWrapper>} />
+                <Route path="/news" element={<PageWrapper><NewsPage /></PageWrapper>} />
+                <Route path="/help" element={<PageWrapper><HelpPage /></PageWrapper>} />
+              </Routes>
+            </AnimatePresence>
+          </div>
+          {location.pathname !== '/help' && <Footer />}
+        </main>
+
+
+        {/* Floating Back to Top Button — anchored bottom 24px, center (slides up dynamically with the footer) */}
+        <AnimatePresence>
+          {showScrollTop && (
+            <motion.button
+              onClick={scrollToTop}
+              initial={{ opacity: 0, y: 30, x: '-50%' }}
+              animate={{ opacity: 1, y: 0, x: '-50%' }}
+              exit={{ opacity: 0, y: 30, x: '-50%' }}
+              whileHover={{ scale: 1.08, y: -2 }}
+              whileTap={{ scale: 0.92 }}
+              className="fixed left-1/2 z-[999] w-12 h-12 bg-white text-gray-700 hover:text-gray-900 rounded-full border border-gray-200 shadow-[0_10px_30px_rgba(0,0,0,0.08)] flex items-center justify-center cursor-pointer select-none transition-all duration-300"
+              style={{ bottom: `${24 + footerVisibleHeight}px` }}
+              aria-label="Back to Top"
+            >
+              <ArrowUp size={20} className="text-gray-500 hover:text-gray-900 transition-colors" />
+            </motion.button>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </>
   );
 }
 

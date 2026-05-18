@@ -238,10 +238,13 @@ const Navbar = ({ hide, isAtTop = true }) => {
                 >
                   <Link
                     to={link.path}
-                    style={{ color: isActive ? '#ffffff' : '' }}
+                    style={{ 
+                      backgroundColor: isActive ? 'var(--accent-primary)' : 'transparent',
+                      color: isActive ? '#ffffff' : '' 
+                    }}
                     className={`flex items-center gap-1 rounded-full font-medium text-[0.9rem] transition-all duration-200 px-4 py-1.5 ${
                       isActive
-                        ? 'bg-gray-900 shadow-md'
+                        ? 'shadow-md'
                         : 'text-gray-600 hover:text-gray-900 hover:bg-black/5'
                     }`}
                   >
@@ -351,33 +354,24 @@ const Navbar = ({ hide, isAtTop = true }) => {
                   <li key={link.path}>
                     <Link
                       to={link.path}
-                      className={`flex items-center justify-between px-5 py-4 rounded-xl text-[1.05rem] font-medium transition-all duration-200 ${
+                      style={
+                        location.pathname === link.path 
+                          ? { backgroundColor: 'var(--accent-primary)', color: '#ffffff' }
+                          : {}
+                      }
+                      className={`flex items-center justify-between px-5 py-4 rounded-[2px] text-[1.05rem] font-medium transition-all duration-200 ${
                         location.pathname === link.path
-                          ? 'bg-[#005600]/10 text-[#005600]'
+                          ? 'shadow-sm'
                           : 'text-gray-700 hover:bg-gray-50'
                       }`}
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {link.name}
-                      <ArrowRight size={16} className={location.pathname === link.path ? 'text-[#005600]' : 'text-gray-300'} />
+                      <ArrowRight size={16} style={{ color: location.pathname === link.path ? '#ffffff' : '#d1d5db' }} />
                     </Link>
                   </li>
                 ))}
               </ul>
-
-              {/* Translate button just below all menus inside the hamburger */}
-              <div className="mt-6 px-1">
-                <button
-                  onClick={() => {
-                    toggleLanguage();
-                    setMobileMenuOpen(false);
-                  }}
-                  className="w-full flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl text-sm font-semibold bg-[#005600] text-white hover:bg-[#004d00] transition-all cursor-pointer shadow-[0_4px_12px_rgba(0,86,0,0.15)]"
-                >
-                  <img src="/translate.svg" className="w-4.5 h-4.5 object-contain" alt="Translate" />
-                  <span>{language === 'en' ? 'தமிழ் இணையதளம்' : 'English Portal'}</span>
-                </button>
-              </div>
             </nav>
 
             {/* Bottom Search Bar — pinned */}
