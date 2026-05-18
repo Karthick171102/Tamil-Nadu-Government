@@ -163,7 +163,7 @@ const HelpPage = () => {
   const actions = quickActions[language] || quickActions.en;
 
   return (
-    <div className="flex flex-col w-full" style={{ height: 'calc(100vh - 116px)', backgroundColor: 'var(--bg-color)' }}>
+    <div className="flex flex-col w-full fixed left-0 right-0 bottom-0 z-40" style={{ top: '116px', backgroundColor: 'var(--bg-color)' }}>
       
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto px-4 py-8 flex flex-col gap-6" style={{ scrollbarWidth: 'none' }}>
