@@ -163,7 +163,7 @@ const HelpPage = () => {
   const actions = quickActions[language] || quickActions.en;
 
   return (
-    <div className="flex flex-col w-full h-full" style={{ backgroundColor: 'var(--bg-color)' }}>
+    <div className="flex flex-col w-full h-full bg-transparent">
       
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto px-4 py-8 flex flex-col gap-6" style={{ scrollbarWidth: 'none' }}>
@@ -284,7 +284,7 @@ const HelpPage = () => {
       </div>
 
       {/* Modern Floating Input Area */}
-      <div className="w-full pb-6 px-4 shrink-0 bg-gradient-to-t from-[var(--bg-color)] via-[var(--bg-color)] to-transparent pt-6">
+      <div className="w-full pb-6 px-4 shrink-0 pt-4 bg-transparent">
         <div className="max-w-3xl mx-auto w-full">
           <div
             className="flex flex-col rounded-[2px] p-1.5 border shadow-[0_8px_30px_rgba(0,0,0,0.04)]"

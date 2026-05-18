@@ -105,7 +105,7 @@ function App() {
       </AnimatePresence>
 
       <motion.div
-        className="flex flex-col fixed inset-0 overflow-hidden w-full bg-white dark:bg-[#0b141a]"
+        className="flex flex-col fixed inset-0 overflow-hidden w-full"
         initial={{ opacity: 0 }}
         animate={{ opacity: loading ? 0 : 1 }}
         transition={{ duration: 0.4, delay: 0.1 }}

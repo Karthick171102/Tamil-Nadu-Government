@@ -256,8 +256,6 @@ button {
     linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
   background-size: 40px 40px;
   background-color: var(--bg-primary);
-  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 30%, transparent 80%);
-  mask-image: linear-gradient(to bottom, black 0%, black 30%, transparent 80%);
   transition: background-color 0.4s ease;
 }
 
