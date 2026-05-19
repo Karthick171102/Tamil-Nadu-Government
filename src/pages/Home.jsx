@@ -202,15 +202,15 @@ const Home = () => {
           </div>
 
           {/* What's New Panel */}
-          <div className="w-full lg:w-[380px] h-full flex flex-col shrink-0 bg-white border border-black/8 rounded-[4px] shadow-[0_8px_30px_rgba(0,0,0,0.02)] overflow-hidden">
-            <div className="p-4 border-b border-black/8 flex items-center justify-between bg-[#f9f7f4]">
+          <div className="w-full lg:w-[380px] h-[400px] lg:h-full flex flex-col shrink-0 bg-white dark:bg-black border border-black/8 dark:border-white/10 rounded-[4px] shadow-[0_8px_30px_rgba(0,0,0,0.02)] overflow-hidden">
+            <div className="p-4 border-b border-black/8 dark:border-white/10 flex items-center justify-between bg-[#f9f7f4] dark:bg-[#111]">
               <div className="flex items-center gap-2">
-                <Megaphone size={18} className="text-red-600 animate-pulse" />
-                <h2 className="font-bold font-outfit text-gray-900 tracking-wide uppercase text-sm">
+                <Megaphone size={18} className="text-red-600 dark:text-red-500 animate-pulse" />
+                <h2 className="font-bold font-outfit text-gray-900 dark:text-white tracking-wide uppercase text-sm">
                   {language === 'en' ? "What's New" : "புதிய அறிவிப்புகள்"}
                 </h2>
               </div>
-              <Link to="/news" className="text-xs font-bold text-[#005600] hover:underline flex items-center gap-1">
+              <Link to="/news" className="text-xs font-bold text-[#005600] dark:text-green-400 hover:underline flex items-center gap-1">
                 {language === 'en' ? 'View All' : 'காண்க'} <ArrowRight size={12} />
               </Link>
             </div>
@@ -221,24 +221,24 @@ const Home = () => {
                   <div key={index} className="h-[130px] shrink-0">
                     <PixelCard
                       variant="green"
-                      className="group relative overflow-hidden h-full rounded-[2px] border border-black/5 hover:border-[#005600]/20 hover:shadow-[0_4px_15px_rgba(0,0,0,0.04)] transition-all duration-300 bg-white cursor-pointer"
+                      className="group relative overflow-hidden h-full rounded-[2px] border border-black/5 dark:border-white/5 hover:border-[#005600]/20 dark:hover:border-green-400/30 hover:shadow-[0_4px_15px_rgba(0,0,0,0.04)] transition-all duration-300 bg-white dark:bg-[#0a0a0a] cursor-pointer"
                     >
-                      <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-[#005600]/5 via-transparent to-transparent pointer-events-none z-1 rounded-tr-[2px]" />
+                      <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-[#005600]/5 dark:from-green-400/5 via-transparent to-transparent pointer-events-none z-1 rounded-tr-[2px]" />
                       <div className="absolute inset-0 p-4 flex flex-col justify-between z-10">
                         <div className="flex justify-between items-start mb-2">
-                          <span className="text-[9px] font-bold tracking-wider uppercase text-[#005600] bg-[#005600]/5 px-2 py-0.5 rounded-[2px]">
+                          <span className="text-[9px] font-bold tracking-wider uppercase text-[#005600] dark:text-green-400 bg-[#005600]/5 dark:bg-green-400/10 px-2 py-0.5 rounded-[2px]">
                             {update.tag}
                           </span>
                           {update.isNew && (
-                            <span className="text-[9px] font-bold text-red-500 bg-red-50 px-1.5 py-0.5 rounded-[2px] animate-pulse">
+                            <span className="text-[9px] font-bold text-red-500 dark:text-red-400 bg-red-50 dark:bg-red-500/10 px-1.5 py-0.5 rounded-[2px] animate-pulse">
                               {language === 'en' ? 'NEW' : 'புதியது'}
                             </span>
                           )}
                         </div>
-                        <h3 className="text-sm font-semibold text-gray-800 leading-snug mb-1 group-hover:text-[#005600] transition-colors line-clamp-2">
+                        <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200 leading-snug mb-1 group-hover:text-[#005600] dark:group-hover:text-green-400 transition-colors line-clamp-2">
                           {update.title}
                         </h3>
-                        <div className="flex items-center text-[10px] text-gray-400 gap-1.5 font-medium mt-auto">
+                        <div className="flex items-center text-[10px] text-gray-400 dark:text-gray-500 gap-1.5 font-medium mt-auto">
                           <Calendar size={10} />
                           <span>{update.date}</span>
                         </div>
