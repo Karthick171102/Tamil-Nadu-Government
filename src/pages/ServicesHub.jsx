@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { 
   Search, ArrowRight, FileText, X,
   Globe, Phone, Briefcase, ExternalLink, Users, BarChart3, ClipboardList, MessageSquare, Shield, Smartphone
@@ -9,20 +10,21 @@ import PixelCard from '../components/PixelCard';
 
 const ServicesHub = () => {
   const { t, language } = useLanguage();
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
 
   const categories = [
-    { label: t('services.cat.onlineServices'), icon: Globe, desc: t('services.cat.onlineServicesDesc'), image: 'https://images.unsplash.com/photo-1588702547884-909355b9439d?auto=format&fit=crop&w=600&q=80', color: '#005600' },
-    { label: t('services.cat.contactDirectory'), icon: Phone, desc: t('services.cat.contactDirectoryDesc'), image: 'https://images.unsplash.com/photo-1562577309-4932fdd64cd1?auto=format&fit=crop&w=600&q=80', color: '#005600' },
-    { label: t('services.cat.jobOpportunity'), icon: Briefcase, desc: t('services.cat.jobOpportunityDesc'), image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=80', color: '#005600' },
-    { label: t('services.cat.importantWebsites'), icon: ExternalLink, desc: t('services.cat.importantWebsitesDesc'), image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80', color: '#005600' },
-    { label: t('services.cat.census'), icon: Users, desc: t('services.cat.censusDesc'), image: 'https://images.unsplash.com/photo-1508962914676-134849a727f0?auto=format&fit=crop&w=600&q=80', color: '#005600' },
-    { label: t('services.cat.statistics'), icon: BarChart3, desc: t('services.cat.statisticsDesc'), image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80', color: '#005600' },
-    { label: t('services.cat.employmentDetails'), icon: ClipboardList, desc: t('services.cat.employmentDetailsDesc'), image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80', color: '#005600' },
-    { label: t('services.cat.grievances'), icon: MessageSquare, desc: t('services.cat.grievancesDesc'), image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=600&q=80', color: '#005600' },
-    { label: t('services.cat.forms'), icon: FileText, desc: t('services.cat.formsDesc'), image: 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=600&q=80', color: '#005600' },
-    { label: t('services.cat.rtiContacts'), icon: Shield, desc: t('services.cat.rtiContactsDesc'), image: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=600&q=80', color: '#005600' },
-    { label: t('services.cat.mobileAppDirectory'), icon: Smartphone, desc: t('services.cat.mobileAppDirectoryDesc'), image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80', color: '#005600' }
+    { label: t('services.cat.onlineServices'), icon: Globe, desc: t('services.cat.onlineServicesDesc'), image: 'https://images.unsplash.com/photo-1588702547884-909355b9439d?auto=format&fit=crop&w=600&q=80', color: '#005600', path: '/services/online' },
+    { label: t('services.cat.contactDirectory'), icon: Phone, desc: t('services.cat.contactDirectoryDesc'), image: 'https://images.unsplash.com/photo-1562577309-4932fdd64cd1?auto=format&fit=crop&w=600&q=80', color: '#005600', path: '#' },
+    { label: t('services.cat.jobOpportunity'), icon: Briefcase, desc: t('services.cat.jobOpportunityDesc'), image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=80', color: '#005600', path: '#' },
+    { label: t('services.cat.importantWebsites'), icon: ExternalLink, desc: t('services.cat.importantWebsitesDesc'), image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80', color: '#005600', path: '#' },
+    { label: t('services.cat.census'), icon: Users, desc: t('services.cat.censusDesc'), image: 'https://images.unsplash.com/photo-1508962914676-134849a727f0?auto=format&fit=crop&w=600&q=80', color: '#005600', path: '#' },
+    { label: t('services.cat.statistics'), icon: BarChart3, desc: t('services.cat.statisticsDesc'), image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80', color: '#005600', path: '#' },
+    { label: t('services.cat.employmentDetails'), icon: ClipboardList, desc: t('services.cat.employmentDetailsDesc'), image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80', color: '#005600', path: '#' },
+    { label: t('services.cat.grievances'), icon: MessageSquare, desc: t('services.cat.grievancesDesc'), image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=600&q=80', color: '#005600', path: '#' },
+    { label: t('services.cat.forms'), icon: FileText, desc: t('services.cat.formsDesc'), image: 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=600&q=80', color: '#005600', path: '#' },
+    { label: t('services.cat.rtiContacts'), icon: Shield, desc: t('services.cat.rtiContactsDesc'), image: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=600&q=80', color: '#005600', path: '#' },
+    { label: t('services.cat.mobileAppDirectory'), icon: Smartphone, desc: t('services.cat.mobileAppDirectoryDesc'), image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80', color: '#005600', path: '#' }
   ];
 
   const filtered = searchQuery.trim()
@@ -91,6 +93,7 @@ const ServicesHub = () => {
               <motion.div key={index} variants={fadeInUp} className="h-[200px]">
                 <PixelCard
                   variant="green"
+                  onClick={() => cat.path !== '#' && navigate(cat.path)}
                   className="group relative overflow-hidden h-full rounded-[2px] border border-black/8 cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] hover:border-[#005600]/20 transition-all duration-300 bg-white"
                 >
                   {/* Mild green gradient at top right alone */}

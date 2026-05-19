@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  Search, ArrowRight, FileText, Briefcase, GraduationCap,
-  Tractor, Users, Globe, FileBadge, Building2, Landmark,
-  MapPin, HelpCircle, FileDown, Bell, Megaphone, Calendar
+import { 
+  ArrowRight, Play, Pause, ChevronLeft, ChevronRight, Search, 
+  Globe, Shield, FileText, Building2, MapPin, HelpCircle, 
+  X, Quote, FileBadge, GraduationCap, Tractor, Users, 
+  Landmark, Bell, Megaphone, Calendar
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
@@ -12,11 +13,27 @@ import './Home.css';
 
 const Home = () => {
   const { language, t } = useLanguage();
+  const [showKuralPopup, setShowKuralPopup] = useState(false);
+
+  useEffect(() => {
+    const hasSeenPopup = sessionStorage.getItem('hasSeenKuralPopup');
+    if (!hasSeenPopup) {
+      const timer = setTimeout(() => {
+        setShowKuralPopup(true);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  const closeKuralPopup = () => {
+    setShowKuralPopup(false);
+    sessionStorage.setItem('hasSeenKuralPopup', 'true');
+  };
 
   const ctas = [
     { icon: FileBadge, label: t('home.ctaFindService'), desc: t('home.ctaFindServiceDesc'), path: '/services', color: '#2563eb' },
     { icon: Globe, label: t('home.ctaExploreSchemes'), desc: t('home.ctaExploreSchemesDesc'), path: '/schemes', color: '#7c3aed' },
-    { icon: FileDown, label: t('home.ctaDownloadDoc'), desc: t('home.ctaDownloadDocDesc'), path: '#', color: '#059669' },
+    { icon: FileText, label: t('home.ctaDownloadDoc'), desc: t('home.ctaDownloadDocDesc'), path: '#', color: '#059669' },
     { icon: Building2, label: t('home.ctaDept'), desc: t('home.ctaDeptDesc'), path: '/departments', color: '#d97706' },
     { icon: MapPin, label: t('home.ctaDistricts'), desc: t('home.ctaDistrictsDesc'), path: '#', color: '#e11d48' },
     { icon: HelpCircle, label: t('home.ctaHelp'), desc: t('home.ctaHelpDesc'), path: '#', color: '#0891b2' },
@@ -24,7 +41,7 @@ const Home = () => {
 
   const audiences = [
     { icon: <Users />, label: t('home.audCitizen') },
-    { icon: <Briefcase />, label: t('home.audBusiness') },
+    { icon: <Building2 />, label: t('home.audBusiness') },
     { icon: <GraduationCap />, label: t('home.audStudent') },
     { icon: <Tractor />, label: t('home.audFarmer') },
     { icon: <Landmark />, label: t('home.audOfficial') },
@@ -33,12 +50,7 @@ const Home = () => {
 
   const staggerContainer = {
     hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
+    show: { opacity: 1, transition: { staggerChildren: 0.1 } }
   };
 
   const fadeInUp = {
@@ -47,65 +59,25 @@ const Home = () => {
   };
 
   const updates = [
-    {
-      title: language === 'en' ? 'G. Os of Public Department - MINISTERS - Allocation of Business - Notified' : 'அரசாணை (பொதுத் துறை) - அமைச்சர்கள் - துறை ஒதுக்கீடு - அறிவிக்கப்பட்டது',
-      date: 'May 18, 2026',
-      tag: language === 'en' ? 'G.Os' : 'அரசாணைகள்',
-      isNew: true
-    },
-    {
-      title: language === 'en' ? 'G. Os of Finance Department - PENSION – Dearness Allowance to the Pensioners and Family Pensioners – Enhanced Rate' : 'அரசாணை (நிதித் துறை) - ஓய்வூதியம் - ஓய்வூதியதாரர்கள் மற்றும் குடும்ப ஓய்வூதியதாரர்களுக்கான அகவிலைப்படி உயர்த்தப்பட்டது',
-      date: 'May 17, 2026',
-      tag: language === 'en' ? 'G.Os' : 'அரசாணைகள்',
-      isNew: true
-    },
-    {
-      title: language === 'en' ? 'Application form for the post of Sign Language Interpretor' : 'சைகை மொழி பெயர்ப்பாளர் பணிக்கான விண்ணப்பப் படிவம்',
-      date: 'May 15, 2026',
-      tag: language === 'en' ? 'Forms' : 'படிவங்கள்',
-      isNew: false
-    },
-    {
-      title: language === 'en' ? 'Tamil Nadu Wakf Board Election Form-I' : 'தமிழ்நாடு வக்ஃப் வாரிய தேர்தல் படிவம்-I',
-      date: 'May 12, 2026',
-      tag: language === 'en' ? 'Forms' : 'படிவங்கள்',
-      isNew: false
-    },
-    {
-      title: language === 'en' ? 'Directorate of Adi Dravidar Welfare- Application form for Financial Assistance to the Best Writers' : 'ஆதிதிராவிடர் நல இயக்குநரகம் - சிறந்த எழுத்தாளர்களுக்கான நிதியுதவி விண்ணப்பப் படிவம்',
-      date: 'May 10, 2026',
-      tag: language === 'en' ? 'Schemes' : 'திட்டங்கள்',
-      isNew: false
-    },
-    {
-      title: language === 'en' ? 'G.Os of Welfare of Differently Abled Persons Department' : 'மாற்றுத்திறனாளிகள் நலத் துறை அரசாணைகள்',
-      date: 'May 05, 2026',
-      tag: language === 'en' ? 'G.Os' : 'அரசாணைகள்',
-      isNew: false
-    }
+    { title: language === 'en' ? 'G. Os of Public Department - MINISTERS - Allocation of Business - Notified' : 'அரசாணை (பொதுத் துறை) - அமைச்சர்கள் - துறை ஒதுக்கீடு - அறிவிக்கப்பட்டது', date: 'May 18, 2026', tag: language === 'en' ? 'G.Os' : 'அரசாணைகள்', isNew: true },
+    { title: language === 'en' ? 'G. Os of Finance Department - PENSION – Dearness Allowance to the Pensioners and Family Pensioners – Enhanced Rate' : 'அரசாணை (நிதித் துறை) - ஓய்வூதியம் - ஓய்வூதியதாரர்கள் மற்றும் குடும்ப ஓய்வூதியதாரர்களுக்கான அகவிலைப்படி உயர்த்தப்பட்டது', date: 'May 17, 2026', tag: language === 'en' ? 'G.Os' : 'அரசாணைகள்', isNew: true },
+    { title: language === 'en' ? 'Application form for the post of Sign Language Interpretor' : 'சைகை மொழி பெயர்ப்பாளர் பணிக்கான விண்ணப்பப் படிவம்', date: 'May 15, 2026', tag: language === 'en' ? 'Forms' : 'படிவங்கள்', isNew: false },
+    { title: language === 'en' ? 'Tamil Nadu Wakf Board Election Form-I' : 'தமிழ்நாடு வக்ஃப் வாரிய தேர்தல் படிவம்-I', date: 'May 12, 2026', tag: language === 'en' ? 'Forms' : 'படிவங்கள்', isNew: false },
+    { title: language === 'en' ? 'Directorate of Adi Dravidar Welfare- Application form for Financial Assistance to the Best Writers' : 'ஆதிதிராவிடர் நல இயக்குநரகம் - சிறந்த எழுத்தாளர்களுக்கான நிதியுதவி விண்ணப்பப் படிவம்', date: 'May 10, 2026', tag: language === 'en' ? 'Schemes' : 'திட்டங்கள்', isNew: false },
+    { title: language === 'en' ? 'G.Os of Welfare of Differently Abled Persons Department' : 'மாற்றுத்திறனாளிகள் நலத் துறை அரசாணைகள்', date: 'May 05, 2026', tag: language === 'en' ? 'G.Os' : 'அரசாணைகள்', isNew: false }
   ];
 
   const carouselSlides = [
-    {
-      image: "/carousel-1.jpg",
-      heading: t('home.slide1Title'),
-      description: t('home.slide1Desc'),
-    },
-    {
-      image: "/carousel-2.jpg",
-      heading: t('home.slide2Title'),
-      description: t('home.slide2Desc'),
-    },
-    {
-      image: "/carousel-3.jpg",
-      heading: t('home.slide3Title'),
-      description: t('home.slide3Desc'),
-    },
-    {
-      image: "/carousel-4.jpg",
-      heading: t('home.slide4Title'),
-      description: t('home.slide4Desc'),
-    },
+    { image: "/carousel-1.jpg", heading: t('home.slide1Title'), description: t('home.slide1Desc') },
+    { image: "/carousel-2.jpg", heading: t('home.slide2Title'), description: t('home.slide2Desc') },
+    { image: "/carousel-3.jpg", heading: t('home.slide3Title'), description: t('home.slide3Desc') },
+    { image: "/carousel-4.jpg", heading: t('home.slide4Title'), description: t('home.slide4Desc') },
+    { image: "/carousel-5.jpg", heading: t('home.slide5Title'), description: t('home.slide5Desc') },
+    { image: "/carousel-6.jpg", heading: t('home.slide6Title'), description: t('home.slide6Desc') },
+    { image: "/carousel-7.jpg", heading: t('home.slide7Title'), description: t('home.slide7Desc') },
+    { image: "/carousel-8.jpg", heading: t('home.slide8Title'), description: t('home.slide8Desc') },
+    { image: "/carousel-9.jpg", heading: t('home.slide9Title'), description: t('home.slide9Desc') },
+    { image: "/carousel-10.jpg", heading: t('home.slide10Title'), description: t('home.slide10Desc') },
   ];
 
   const [currentImage, setCurrentImage] = useState(0);
@@ -132,42 +104,48 @@ const Home = () => {
     const delta = touchStartX.current - touchEndX.current;
     const minSwipe = 50;
     if (delta > minSwipe) {
-      // Swiped left → next slide
       setCurrentImage((prev) => (prev + 1) % carouselSlides.length);
     } else if (delta < -minSwipe) {
-      // Swiped right → previous slide
       setCurrentImage((prev) => (prev - 1 + carouselSlides.length) % carouselSlides.length);
     }
   }, [carouselSlides.length]);
 
   return (
     <div className="pb-20">
-      {/* Hero Section & What's New Split */}
       <section className="relative container mx-auto px-6 mb-16 mt-6">
         <div className="flex flex-col lg:flex-row gap-6 h-auto lg:h-[60vh] lg:min-h-[450px] max-h-[700px]">
-          {/* Carousel */}
           <div
             className="relative w-full lg:flex-1 h-[45vh] min-h-[280px] md:h-[50vh] md:min-h-[350px] lg:h-full overflow-hidden bg-black rounded-[4px] shadow-[0_8px_30px_rgba(0,0,0,0.04)]"
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
           >
-            <AnimatePresence initial={false}>
-              <motion.img
+            <AnimatePresence initial={false} mode="wait">
+              <motion.div
                 key={currentImage}
-                src={carouselSlides[currentImage].image}
-                alt={carouselSlides[currentImage].heading}
-                className="absolute inset-0 w-full h-full object-contain md:object-cover"
-                initial={{ opacity: 0, scale: 1.05 }}
-                animate={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] }}
-              />
+                transition={{ duration: 0.8 }}
+                className="absolute inset-0"
+              >
+                <img
+                  src={carouselSlides[currentImage].image}
+                  alt=""
+                  className="absolute inset-0 w-full h-full object-cover blur-3xl scale-110 opacity-40"
+                />
+                <motion.img
+                  src={carouselSlides[currentImage].image}
+                  alt={carouselSlides[currentImage].heading}
+                  className="relative w-full h-full object-contain z-10"
+                  initial={{ opacity: 0, scale: 1.02 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                />
+              </motion.div>
             </AnimatePresence>
-
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-            
-            <div className="absolute bottom-8 md:bottom-12 left-0 right-0 z-10 px-8">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent z-20 pointer-events-none" />
+            <div className="absolute bottom-8 md:bottom-12 left-0 right-0 z-30 px-8">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentImage}
@@ -186,7 +164,6 @@ const Home = () => {
                 </motion.div>
               </AnimatePresence>
             </div>
-
             <div className="absolute bottom-4 right-8 flex items-center gap-2 z-20">
               {carouselSlides.map((_, idx) => (
                 <button
@@ -200,8 +177,6 @@ const Home = () => {
               ))}
             </div>
           </div>
-
-          {/* What's New Panel */}
           <div className="w-full lg:w-[380px] h-[400px] lg:h-full flex flex-col shrink-0 bg-white dark:bg-black border border-black/8 dark:border-white/10 rounded-[4px] shadow-[0_8px_30px_rgba(0,0,0,0.02)] overflow-hidden">
             <div className="p-4 border-b border-black/8 dark:border-white/10 flex items-center justify-between bg-[#f9f7f4] dark:bg-[#111]">
               <div className="flex items-center gap-2">
@@ -214,7 +189,6 @@ const Home = () => {
                 {language === 'en' ? 'View All' : 'காண்க'} <ArrowRight size={12} />
               </Link>
             </div>
-            
             <div className="flex-1 overflow-hidden p-4 relative ticker-mask pause-on-hover">
               <div className="flex flex-col gap-3 animate-scroll-vertical">
                 {[...updates, ...updates].map((update, index) => (
@@ -252,7 +226,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Primary CTAs Grid */}
       <section className="relative z-10 container mx-auto px-6">
         <motion.div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
@@ -268,21 +241,13 @@ const Home = () => {
                   variant="green"
                   className="group relative overflow-hidden h-full rounded-[2px] border border-black/8 cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] hover:border-[#005600]/20 transition-all duration-300 bg-white"
                 >
-                  {/* Mild green gradient at top right alone */}
                   <div className="absolute top-0 right-0 w-28 h-28 bg-gradient-to-bl from-[#005600]/8 via-transparent to-transparent pointer-events-none z-1 rounded-tr-[2px]" />
-
-                  {/* Absolute Card Content Overlay */}
                   <div className="absolute inset-0 p-8 flex flex-col justify-between z-10">
                     <div className="flex items-center justify-between">
-                      <div
-                        className="w-10 h-10 rounded-[2px] flex items-center justify-center bg-[#005600]/8 text-[#005600] group-hover:bg-[#005600] group-hover:text-white transition-all duration-300"
-                      >
+                      <div className="w-10 h-10 rounded-[2px] flex items-center justify-center bg-[#005600]/8 text-[#005600] group-hover:bg-[#005600] group-hover:text-white transition-all duration-300">
                         <cta.icon size={20} />
                       </div>
-                      <ArrowRight
-                        size={18}
-                        className="text-gray-400 transition-all duration-300 group-hover:translate-x-1.5 group-hover:text-[#005600]"
-                      />
+                      <ArrowRight size={18} className="text-gray-400 transition-all duration-300 group-hover:translate-x-1.5 group-hover:text-[#005600]" />
                     </div>
                     <div>
                       <h3 className="text-base font-bold text-gray-900 mb-1 group-hover:text-[#005600] transition-colors">{cta.label}</h3>
@@ -296,14 +261,8 @@ const Home = () => {
         </motion.div>
       </section>
 
-      {/* Audiences */}
       <section className="mt-[60px] container mx-auto px-6">
-        <motion.div
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          variants={fadeInUp}
-        >
+        <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeInUp}>
           <h2 className="text-3xl mb-8 text-center font-outfit font-bold">{t('home.audienceTitle')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto w-full">
             {audiences.map((audience, index) => (
@@ -321,15 +280,11 @@ const Home = () => {
         </motion.div>
       </section>
 
-
-
-      {/* Featured Services */}
       <section className="mt-[60px] container mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 md:gap-0 mb-8">
           <h2 className="text-3xl text-left font-outfit font-bold mb-0">{t('home.featuredTitle')}</h2>
           <Link to="/services" className="btn-secondary">{t('home.featuredViewAll')} <ArrowRight size={16} /></Link>
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-6">
           {[
             { title: t('home.communityCert'), dept: t('home.revenueDept'), time: language === 'en' ? '15 Days' : '15 நாட்கள்' },
@@ -348,21 +303,12 @@ const Home = () => {
                 variant="green"
                 className="group relative overflow-hidden h-full rounded-[2px] border border-black/8 cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] hover:border-[#005600]/20 transition-all duration-300 bg-white"
               >
-                {/* Mild green gradient at top right alone */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#005600]/8 via-transparent to-transparent pointer-events-none z-1 rounded-tr-[2px]" />
-
-                {/* Absolute Card Content Overlay */}
                 <div className="absolute inset-0 p-8 flex flex-col justify-between z-10">
                   <div>
-                    <span className="text-xs text-[#005600] font-semibold uppercase tracking-wider mb-2 inline-block">
-                      {service.dept}
-                    </span>
-                    <h3 className="text-xl mb-1 font-outfit font-bold text-gray-900 group-hover:text-[#005600] transition-colors">
-                      {service.title}
-                    </h3>
-                    <p className="text-gray-400 text-xs">
-                      {language === 'en' ? 'Processing: ' : 'செயல்முறை நேரம்: '}{service.time}
-                    </p>
+                    <span className="text-xs text-[#005600] font-semibold uppercase tracking-wider mb-2 inline-block">{service.dept}</span>
+                    <h3 className="text-xl mb-1 font-outfit font-bold text-gray-900 group-hover:text-[#005600] transition-colors">{service.title}</h3>
+                    <p className="text-gray-400 text-xs">{language === 'en' ? 'Processing: ' : 'செயல்முறை நேரம்: '}{service.time}</p>
                   </div>
                   <button className="btn-primary w-full text-xs py-2">{t('home.featuredApply')}</button>
                 </div>
@@ -371,6 +317,108 @@ const Home = () => {
           ))}
         </div>
       </section>
+
+      <section className="py-20 relative overflow-hidden">
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="max-w-5xl mx-auto overflow-hidden">
+            <div className="p-8 md:p-12 flex flex-col md:flex-row items-center gap-8 md:gap-12">
+              <div className="w-full max-w-[240px] aspect-square shrink-0 rounded-[12px] overflow-hidden border border-gray-100 dark:border-white/10 bg-gray-50 dark:bg-white/5 relative z-20">
+                <img src="/thiruvalluvar.png" alt="Thiruvalluvar" className="w-full h-full object-contain" />
+              </div>
+              
+              <div className="flex-1 relative z-20">
+                <div className="flex items-center gap-2 mb-6">
+                  <Quote size={24} className="text-[#005600] dark:text-green-400 rotate-180" />
+                  <span className="text-sm font-bold uppercase tracking-widest text-gray-400">{t('kural.title')}</span>
+                </div>
+                
+                <h2 className="text-[clamp(1.1rem,4.5vw,2.5rem)] font-black text-gray-900 dark:text-white mb-6 leading-tight font-anek-tamil">
+                  <div className="mb-2 whitespace-nowrap">{t('kural.textLine1')}</div>
+                  <div className="whitespace-nowrap">{t('kural.textLine2')}</div>
+                </h2>
+                
+                <div className="space-y-6">
+                  <div>
+                    <h4 className="text-[10px] font-bold uppercase tracking-wider text-[#005600] dark:text-green-400 mb-2">Tamil Meaning</h4>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed italic font-anek-tamil">
+                      "{t('kural.meaningTa')}"
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="text-[10px] font-bold uppercase tracking-wider text-[#005600] dark:text-green-400 mb-2">English Meaning</h4>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed italic">
+                      "{t('kural.meaningEn')}"
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <AnimatePresence>
+        {showKuralPopup && (
+          <div className="fixed inset-0 z-[2000] flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/60 backdrop-blur-md"
+              onClick={closeKuralPopup}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="relative w-full max-w-2xl bg-white dark:bg-[#0a0a0a] rounded-[2px] shadow-2xl overflow-hidden border border-white/10"
+            >
+              <PixelCard variant="green" className="h-full w-full">
+                <button 
+                  onClick={closeKuralPopup}
+                  className="absolute top-4 right-4 z-30 w-8 h-8 flex items-center justify-center rounded-full bg-black/5 dark:bg-white/5 text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors"
+                >
+                  <X size={18} />
+                </button>
+
+                <div className="flex flex-col md:flex-row relative z-20">
+                  <div className="w-full md:w-2/5 h-64 md:h-auto bg-gray-50 dark:bg-white/5 p-4 md:p-0">
+                    <img src="/thiruvalluvar.png" alt="Thiruvalluvar" className="w-full h-full object-contain rounded-[12px] md:rounded-none" />
+                  </div>
+                  
+                  <div className="flex-1 p-8 md:p-10 flex flex-col justify-center">
+                    <div className="text-[#005600] dark:text-green-400 text-xs font-bold uppercase tracking-[0.2em] mb-4">
+                      {t('kural.no')}
+                    </div>
+                    
+                    <h3 className="text-[clamp(1rem,4.2vw,2rem)] font-black text-gray-900 dark:text-white mb-6 leading-tight font-anek-tamil">
+                      <div className="mb-2 whitespace-nowrap">{t('kural.textLine1')}</div>
+                      <div className="whitespace-nowrap">{t('kural.textLine2')}</div>
+                    </h3>
+
+                    <div className="space-y-4 mb-8">
+                      <p className="text-gray-500 dark:text-gray-400 text-xs leading-relaxed italic font-anek-tamil">
+                        "{t('kural.meaningTa')}"
+                      </p>
+                      <p className="text-gray-400 dark:text-gray-500 text-xs leading-relaxed italic">
+                        "{t('kural.meaningEn')}"
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={closeKuralPopup}
+                      className="w-full py-3 bg-[#005600] hover:bg-[#004d00] text-white text-[11px] font-bold uppercase tracking-widest transition-all duration-300 rounded-[2px] shadow-lg shadow-[#005600]/20"
+                    >
+                      {t('kural.close')}
+                    </button>
+                  </div>
+                </div>
+              </PixelCard>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

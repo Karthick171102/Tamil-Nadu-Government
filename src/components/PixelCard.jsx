@@ -136,7 +136,8 @@ export default function PixelCard({
   noFocus,
   opacity,
   className = '',
-  children
+  children,
+  ...props
 }) {
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
@@ -251,6 +252,7 @@ export default function PixelCard({
       onFocus={finalNoFocus ? undefined : onFocus}
       onBlur={finalNoFocus ? undefined : onBlur}
       tabIndex={finalNoFocus ? -1 : 0}
+      {...props}
     >
       <canvas className="pixel-canvas" ref={canvasRef} style={opacity !== undefined ? { opacity } : undefined} />
       {children}

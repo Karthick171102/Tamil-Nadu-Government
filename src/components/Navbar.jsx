@@ -48,7 +48,7 @@ const submenus = {
   '/services': {
     columns: [
       [
-        { label: 'Online Services',    path: '/services' },
+        { label: 'Online Services',    path: '/services/online' },
         { label: 'Contact Directory',  path: '/services' },
         { label: 'Job Opportunity',    path: '/services' },
         { label: 'Important Websites', path: '/services' },
@@ -250,7 +250,9 @@ const Navbar = ({ hide, isAtTop = true }) => {
         <nav className="hidden xl:block shrink-0">
           <ul className="flex items-center gap-1">
             {navLinks.map((link) => {
-              const isActive = location.pathname === link.path;
+              const isActive = link.path === '/' 
+                ? location.pathname === '/' 
+                : location.pathname.startsWith(link.path);
               const hasDropdown = !!submenus[link.path];
               return (
                 <li

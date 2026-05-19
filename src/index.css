@@ -25,6 +25,10 @@
   font-family: 'Anek Tamil', sans-serif !important;
 }
 
+.font-anek-tamil {
+  font-family: 'Anek Tamil', sans-serif !important;
+}
+
 :root {
   --bg-primary: #f9f7f4;
   --bg-secondary: #ffffff;

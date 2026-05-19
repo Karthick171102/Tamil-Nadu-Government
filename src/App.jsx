@@ -7,6 +7,7 @@ import Footer from './components/Footer';
 import Loader from './components/Loader';
 import Home from './pages/Home';
 import ServicesHub from './pages/ServicesHub';
+import OnlineServices from './pages/OnlineServices';
 import DepartmentsHub from './pages/DepartmentsHub';
 import GovernmentHub from './pages/GovernmentHub';
 import DocumentsHub from './pages/DocumentsHub';
@@ -120,6 +121,7 @@ function App() {
               <Routes location={location} key={location.pathname}>
                 <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
                 <Route path="/services" element={<PageWrapper><ServicesHub /></PageWrapper>} />
+                <Route path="/services/online" element={<PageWrapper><OnlineServices /></PageWrapper>} />
                 <Route path="/departments" element={<PageWrapper><DepartmentsHub /></PageWrapper>} />
                 <Route path="/government" element={<PageWrapper><GovernmentHub /></PageWrapper>} />
                 <Route path="/documents" element={<PageWrapper><DocumentsHub /></PageWrapper>} />
