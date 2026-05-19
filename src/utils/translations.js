@@ -125,6 +125,30 @@ const translations = {
     'dept.cat.it': 'Information Technology',
     'dept.cat.itDesc': 'Digital governance, IT infrastructure.',
 
+    // Government Hub
+    'gov.cat.ministers': 'Ministers',
+    'gov.cat.ministersDesc': 'Cabinet ministers and their portfolios.',
+    'gov.cat.departments': 'Departments',
+    'gov.cat.departmentsDesc': 'State government departments and boards.',
+    'gov.cat.districts': 'Districts',
+    'gov.cat.districtsDesc': 'Information and administration of 38 districts.',
+    'gov.cat.agencies': 'Agencies',
+    'gov.cat.agenciesDesc': 'Autonomous bodies, corporations and commissions.',
+
+    // Documents Hub
+    'doc.gos': 'G.Os',
+    'doc.gosDesc': 'Government Orders, directives and official notifications.',
+    'doc.policy': 'Policy Notes / Performance Budget / Citizen Charter',
+    'doc.policyDesc': 'Annual policy notes, budgets and citizen charters.',
+    'doc.rules': 'Rules & Regulations',
+    'doc.rulesDesc': 'Statutory rules, regulations, and manuals.',
+    'doc.circulars': 'Circulars & Notifications',
+    'doc.circularsDesc': 'Official circulars, memos, and notifications.',
+    'doc.announcements': 'Announcements',
+    'doc.announcementsDesc': 'Press releases and public announcements.',
+    'doc.acts': 'Acts',
+    'doc.actsDesc': 'Legislative acts and bills passed by the assembly.',
+
     // Placeholders
     'ph.underConstruction': 'Under Construction',
     'ph.desc.government': 'Ministers, departments, districts, agencies, and the complete contact directory of Tamil Nadu Government.',
@@ -257,6 +281,30 @@ const translations = {
     'dept.cat.agricultureDesc': 'விவசாய முறைகள், பயிர் காப்பீடு மற்றும் மானியங்கள்.',
     'dept.cat.it': 'தகவல் தொழில்நுட்பத் துறை',
     'dept.cat.itDesc': 'டிஜிட்டல் நிர்வாகம் மற்றும் தகவல் தொழில்நுட்ப உள்கட்டமைப்பு.',
+
+    // Government Hub
+    'gov.cat.ministers': 'அமைச்சர்கள்',
+    'gov.cat.ministersDesc': 'அமைச்சரவை அமைச்சர்கள் மற்றும் அவர்களது துறைகள்.',
+    'gov.cat.departments': 'துறைகள்',
+    'gov.cat.departmentsDesc': 'மாநில அரசுத் துறைகள் மற்றும் வாரியங்கள்.',
+    'gov.cat.districts': 'மாவட்டங்கள்',
+    'gov.cat.districtsDesc': '38 மாவட்டங்களின் தகவல் மற்றும் நிர்வாகம்.',
+    'gov.cat.agencies': 'முகமைகள்',
+    'gov.cat.agenciesDesc': 'தன்னாட்சி அமைப்புகள் மற்றும் ஆணையங்கள்.',
+
+    // Documents Hub
+    'doc.gos': 'அரசாணைகள் (G.Os)',
+    'doc.gosDesc': 'அரசாணைகள், வழிகாட்டுதல்கள் மற்றும் அதிகாரப்பூர்வ அறிவிப்புகள்.',
+    'doc.policy': 'கொள்கை குறிப்புகள் / செயல்திறன் பட்ஜெட் / குடிமக்கள் சாசனம்',
+    'doc.policyDesc': 'ஆண்டு கொள்கை குறிப்புகள், பட்ஜெட்டுகள் மற்றும் குடிமக்கள் சாசனங்கள்.',
+    'doc.rules': 'விதிகள் மற்றும் விதிமுறைகள்',
+    'doc.rulesDesc': 'சட்டரீதியான விதிகள், ஒழுங்குமுறைகள் மற்றும் கையேடுகள்.',
+    'doc.circulars': 'சுற்றறிக்கைகள் மற்றும் அறிவிப்புகள்',
+    'doc.circularsDesc': 'அதிகாரப்பூர்வ சுற்றறிக்கைகள், குறிப்புகள் மற்றும் அறிவிப்புகள்.',
+    'doc.announcements': 'அறிவிப்புகள்',
+    'doc.announcementsDesc': 'பத்திரிகை வெளியீடுகள் மற்றும் பொது அறிவிப்புகள்.',
+    'doc.acts': 'சட்டங்கள்',
+    'doc.actsDesc': 'சட்டமன்றத்தால் நிறைவேற்றப்பட்ட சட்டங்கள் மற்றும் மசோதாக்கள்.',
 
     // Placeholders
     'ph.underConstruction': 'கட்டுமானத்தில் உள்ளது',

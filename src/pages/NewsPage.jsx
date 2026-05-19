@@ -361,28 +361,28 @@ const NewsPage = () => {
       {/* Follow CTA */}
       <section className="container mx-auto px-6 mt-14">
         <motion.div
-          className="relative bg-[#040904] rounded-[2px] p-8 md:p-12 overflow-hidden"
+          className="relative bg-[#040904] dark:bg-white rounded-[2px] p-8 md:p-12 overflow-hidden border border-transparent dark:border-black/10"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-[#005600]/20 via-transparent to-transparent pointer-events-none" />
-          <div className="relative z-10">
-            <h3 className="text-xl md:text-2xl font-outfit font-bold text-white mb-2">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-[#005600]/20 dark:from-[#005600]/10 via-transparent to-transparent pointer-events-none" />
+          <div className="relative z-10 flex flex-col h-full justify-center">
+            <h3 className="text-xl md:text-2xl font-outfit font-bold text-white dark:text-gray-900 mb-2">
               {language === 'en' ? 'Follow CMO Tamil Nadu' : 'CMO தமிழ்நாடு-வை பின்தொடருங்கள்'}
             </h3>
-            <p className="text-gray-400 text-sm mb-6 max-w-lg">
+            <p className="text-gray-400 dark:text-gray-500 text-sm mb-8 max-w-xl">
               {language === 'en'
                 ? 'Get real-time updates directly from the Chief Minister\'s Office on your favourite platform.'
                 : 'உங்களுக்குப் பிடித்த தளத்தில் முதலமைச்சர் அலுவலகத்தின் நேரடி புதுப்பிப்புகளைப் பெறுங்கள்.'}
             </p>
-            <div className="flex flex-col gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {[
-                { key: 'twitter', href: 'https://x.com/CMOTamilnadu', color: '#1d9bf0', bgFrom: '#1d9bf0', bgTo: '#0d8ce0' },
-                { key: 'instagram', href: 'https://www.instagram.com/cmotamilnadu/', color: '#E1306C', bgFrom: '#f77737', bgTo: '#E1306C' },
-                { key: 'facebook', href: 'https://www.facebook.com/CMOTamilnadu/', color: '#1877F2', bgFrom: '#1877F2', bgTo: '#0d65d9' },
-              ].map(({ key, href, bgFrom, bgTo }) => {
+                { key: 'twitter', href: 'https://x.com/CMOTamilnadu', color: '#1d9bf0', bgFrom: '#1d9bf0', bgTo: '#0d8ce0', followers: '2.2M' },
+                { key: 'instagram', href: 'https://www.instagram.com/cmotamilnadu/', color: '#E1306C', bgFrom: '#f77737', bgTo: '#E1306C', followers: '3M' },
+                { key: 'facebook', href: 'https://www.facebook.com/CMOTamilnadu/', color: '#1877F2', bgFrom: '#1877F2', bgTo: '#0d65d9', followers: '563K' },
+              ].map(({ key, href, bgFrom, bgTo, followers }) => {
                 const plat = platforms[key];
                 return (
                   <a
@@ -390,17 +390,25 @@ const NewsPage = () => {
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group flex items-center gap-4 w-full px-5 py-4 rounded-[2px] text-white font-semibold text-sm transition-all duration-300 hover:translate-x-1 hover:shadow-lg"
+                    className="group flex flex-col justify-between p-5 rounded-[2px] text-white font-semibold transition-all duration-300 hover:-translate-y-1 hover:shadow-lg h-[140px]"
                     style={{ background: `linear-gradient(135deg, ${bgFrom}, ${bgTo})` }}
                   >
-                    <span className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center shrink-0">
-                      {plat.icon}
-                    </span>
-                    <div className="flex-1 min-w-0">
-                      <span className="block text-base font-bold">{plat.name}</span>
-                      <span className="block text-white/70 text-xs font-medium">{plat.handle}</span>
+                    <div className="flex justify-between items-start w-full">
+                      <span className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+                        {plat.icon}
+                      </span>
+                      <ExternalLink size={18} className="text-white/60 group-hover:text-white shrink-0 transition-colors" />
                     </div>
-                    <ExternalLink size={18} className="text-white/60 group-hover:text-white shrink-0 transition-colors" />
+                    <div className="flex justify-between items-end w-full mt-4">
+                      <div className="flex flex-col">
+                        <span className="block text-base font-bold">{plat.name}</span>
+                        <span className="block text-white/80 text-xs font-medium">{plat.handle}</span>
+                      </div>
+                      <div className="text-right">
+                        <span className="block text-xl font-bold font-outfit">{followers}</span>
+                        <span className="block text-[10px] text-white/80 uppercase tracking-wider">Followers</span>
+                      </div>
+                    </div>
                   </a>
                 );
               })}

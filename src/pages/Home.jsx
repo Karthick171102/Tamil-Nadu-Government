@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Search, ArrowRight, FileText, Briefcase, GraduationCap,
   Tractor, Users, Globe, FileBadge, Building2, Landmark,
-  MapPin, HelpCircle, FileDown
+  MapPin, HelpCircle, FileDown, Bell, Megaphone, Calendar
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
@@ -45,6 +45,45 @@ const Home = () => {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } }
   };
+
+  const updates = [
+    {
+      title: language === 'en' ? 'G. Os of Public Department - MINISTERS - Allocation of Business - Notified' : 'அரசாணை (பொதுத் துறை) - அமைச்சர்கள் - துறை ஒதுக்கீடு - அறிவிக்கப்பட்டது',
+      date: 'May 18, 2026',
+      tag: language === 'en' ? 'G.Os' : 'அரசாணைகள்',
+      isNew: true
+    },
+    {
+      title: language === 'en' ? 'G. Os of Finance Department - PENSION – Dearness Allowance to the Pensioners and Family Pensioners – Enhanced Rate' : 'அரசாணை (நிதித் துறை) - ஓய்வூதியம் - ஓய்வூதியதாரர்கள் மற்றும் குடும்ப ஓய்வூதியதாரர்களுக்கான அகவிலைப்படி உயர்த்தப்பட்டது',
+      date: 'May 17, 2026',
+      tag: language === 'en' ? 'G.Os' : 'அரசாணைகள்',
+      isNew: true
+    },
+    {
+      title: language === 'en' ? 'Application form for the post of Sign Language Interpretor' : 'சைகை மொழி பெயர்ப்பாளர் பணிக்கான விண்ணப்பப் படிவம்',
+      date: 'May 15, 2026',
+      tag: language === 'en' ? 'Forms' : 'படிவங்கள்',
+      isNew: false
+    },
+    {
+      title: language === 'en' ? 'Tamil Nadu Wakf Board Election Form-I' : 'தமிழ்நாடு வக்ஃப் வாரிய தேர்தல் படிவம்-I',
+      date: 'May 12, 2026',
+      tag: language === 'en' ? 'Forms' : 'படிவங்கள்',
+      isNew: false
+    },
+    {
+      title: language === 'en' ? 'Directorate of Adi Dravidar Welfare- Application form for Financial Assistance to the Best Writers' : 'ஆதிதிராவிடர் நல இயக்குநரகம் - சிறந்த எழுத்தாளர்களுக்கான நிதியுதவி விண்ணப்பப் படிவம்',
+      date: 'May 10, 2026',
+      tag: language === 'en' ? 'Schemes' : 'திட்டங்கள்',
+      isNew: false
+    },
+    {
+      title: language === 'en' ? 'G.Os of Welfare of Differently Abled Persons Department' : 'மாற்றுத்திறனாளிகள் நலத் துறை அரசாணைகள்',
+      date: 'May 05, 2026',
+      tag: language === 'en' ? 'G.Os' : 'அரசாணைகள்',
+      isNew: false
+    }
+  ];
 
   const carouselSlides = [
     {
@@ -103,63 +142,113 @@ const Home = () => {
 
   return (
     <div className="pb-20">
-      {/* Hero Section Carousel */}
-      <section
-        className="relative w-full h-[45vh] min-h-[280px] md:h-[60vh] md:min-h-[420px] lg:h-[70vh] lg:min-h-[500px] max-h-[800px] overflow-hidden mb-16 bg-black"
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
-        <AnimatePresence initial={false}>
-          <motion.img
-            key={currentImage}
-            src={carouselSlides[currentImage].image}
-            alt={carouselSlides[currentImage].heading}
-            className="absolute inset-0 w-full h-full object-contain md:object-cover"
-            initial={{ opacity: 0, scale: 1.05 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] }}
-          />
-        </AnimatePresence>
+      {/* Hero Section & What's New Split */}
+      <section className="relative container mx-auto px-6 mb-16 mt-6">
+        <div className="flex flex-col lg:flex-row gap-6 h-auto lg:h-[60vh] lg:min-h-[450px] max-h-[700px]">
+          {/* Carousel */}
+          <div
+            className="relative w-full lg:flex-1 h-[45vh] min-h-[280px] md:h-[50vh] md:min-h-[350px] lg:h-full overflow-hidden bg-black rounded-[4px] shadow-[0_8px_30px_rgba(0,0,0,0.04)]"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
+            <AnimatePresence initial={false}>
+              <motion.img
+                key={currentImage}
+                src={carouselSlides[currentImage].image}
+                alt={carouselSlides[currentImage].heading}
+                className="absolute inset-0 w-full h-full object-contain md:object-cover"
+                initial={{ opacity: 0, scale: 1.05 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] }}
+              />
+            </AnimatePresence>
 
-        {/* Gradient overlays — strong blackout for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/10" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+            
+            <div className="absolute bottom-8 md:bottom-12 left-0 right-0 z-10 px-8">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentImage}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.6, ease: 'easeOut' }}
+                  className="max-w-[700px]"
+                >
+                  <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2 leading-tight font-outfit">
+                    {carouselSlides[currentImage].heading}
+                  </h2>
+                  <p className="text-sm md:text-base text-white/80 leading-relaxed line-clamp-2">
+                    {carouselSlides[currentImage].description}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
+            </div>
 
-        {/* Caption */}
-        <div className="absolute bottom-12 md:bottom-16 left-0 right-0 z-10 container mx-auto px-6">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentImage}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
-              className="max-w-[600px]"
-            >
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-1 md:mb-2 leading-tight font-outfit">
-                {carouselSlides[currentImage].heading}
-              </h2>
-              <p className="text-xs sm:text-sm md:text-base text-white/80 leading-relaxed line-clamp-2 md:line-clamp-none">
-                {carouselSlides[currentImage].description}
-              </p>
-            </motion.div>
-          </AnimatePresence>
-        </div>
+            <div className="absolute bottom-4 right-8 flex items-center gap-2 z-20">
+              {carouselSlides.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentImage(idx)}
+                  className={`transition-all duration-500 ease-out ${
+                    idx === currentImage ? 'w-6 h-1.5 bg-white' : 'w-1.5 h-1.5 bg-white/40 hover:bg-white/70'
+                  }`}
+                  aria-label={`Go to slide ${idx + 1}`}
+                />
+              ))}
+            </div>
+          </div>
 
-        {/* Carousel Indicators — bottom-right aligned, slim rectangles/squares */}
-        <div className="absolute bottom-4 md:bottom-8 right-6 md:right-10 flex items-center gap-2 z-20">
-          {carouselSlides.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => setCurrentImage(idx)}
-              className={`transition-all duration-500 ease-out ${
-                idx === currentImage ? 'w-6 h-1.5 bg-white' : 'w-1.5 h-1.5 bg-white/40 hover:bg-white/70'
-              }`}
-              aria-label={`Go to slide ${idx + 1}`}
-            />
-          ))}
+          {/* What's New Panel */}
+          <div className="w-full lg:w-[380px] h-full flex flex-col shrink-0 bg-white border border-black/8 rounded-[4px] shadow-[0_8px_30px_rgba(0,0,0,0.02)] overflow-hidden">
+            <div className="p-4 border-b border-black/8 flex items-center justify-between bg-[#f9f7f4]">
+              <div className="flex items-center gap-2">
+                <Megaphone size={18} className="text-red-600 animate-pulse" />
+                <h2 className="font-bold font-outfit text-gray-900 tracking-wide uppercase text-sm">
+                  {language === 'en' ? "What's New" : "புதிய அறிவிப்புகள்"}
+                </h2>
+              </div>
+              <Link to="/news" className="text-xs font-bold text-[#005600] hover:underline flex items-center gap-1">
+                {language === 'en' ? 'View All' : 'காண்க'} <ArrowRight size={12} />
+              </Link>
+            </div>
+            
+            <div className="flex-1 overflow-hidden p-4 relative ticker-mask pause-on-hover">
+              <div className="flex flex-col gap-3 animate-scroll-vertical">
+                {[...updates, ...updates].map((update, index) => (
+                  <div key={index} className="h-[130px] shrink-0">
+                    <PixelCard
+                      variant="green"
+                      className="group relative overflow-hidden h-full rounded-[2px] border border-black/5 hover:border-[#005600]/20 hover:shadow-[0_4px_15px_rgba(0,0,0,0.04)] transition-all duration-300 bg-white cursor-pointer"
+                    >
+                      <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-[#005600]/5 via-transparent to-transparent pointer-events-none z-1 rounded-tr-[2px]" />
+                      <div className="absolute inset-0 p-4 flex flex-col justify-between z-10">
+                        <div className="flex justify-between items-start mb-2">
+                          <span className="text-[9px] font-bold tracking-wider uppercase text-[#005600] bg-[#005600]/5 px-2 py-0.5 rounded-[2px]">
+                            {update.tag}
+                          </span>
+                          {update.isNew && (
+                            <span className="text-[9px] font-bold text-red-500 bg-red-50 px-1.5 py-0.5 rounded-[2px] animate-pulse">
+                              {language === 'en' ? 'NEW' : 'புதியது'}
+                            </span>
+                          )}
+                        </div>
+                        <h3 className="text-sm font-semibold text-gray-800 leading-snug mb-1 group-hover:text-[#005600] transition-colors line-clamp-2">
+                          {update.title}
+                        </h3>
+                        <div className="flex items-center text-[10px] text-gray-400 gap-1.5 font-medium mt-auto">
+                          <Calendar size={10} />
+                          <span>{update.date}</span>
+                        </div>
+                      </div>
+                    </PixelCard>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -231,6 +320,8 @@ const Home = () => {
           </div>
         </motion.div>
       </section>
+
+
 
       {/* Featured Services */}
       <section className="mt-[60px] container mx-auto px-6">

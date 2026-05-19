@@ -22,6 +22,7 @@ export const LanguageProvider = ({ children }) => {
 
   useEffect(() => {
     document.documentElement.lang = language;
+    document.title = language === 'ta' ? 'தமிழ்நாடு அரசு' : 'Government of Tamil Nadu';
     if (language === 'ta') {
       document.documentElement.classList.add('lang-ta');
     } else {

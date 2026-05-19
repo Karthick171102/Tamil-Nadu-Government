@@ -88,6 +88,22 @@ const submenus = {
       ],
     ],
   },
+  '/documents': {
+    columns: [
+      [
+        { label: 'G.Os', path: '/documents' },
+        { label: 'Policy Notes / Performance Budget / Citizen Charter', path: '/documents' },
+      ],
+      [
+        { label: 'Rules & Regulations', path: '/documents' },
+        { label: 'Circulars & Notifications', path: '/documents' },
+      ],
+      [
+        { label: 'Announcements', path: '/documents' },
+        { label: 'Acts', path: '/documents' },
+      ],
+    ],
+  },
 };
 
 const Navbar = ({ hide, isAtTop = true }) => {
@@ -123,7 +139,14 @@ const Navbar = ({ hide, isAtTop = true }) => {
       'Ministers': 'gov.ministers',
       'Departments': 'gov.departments',
       'Districts': 'gov.districts',
-      'Agencies': 'gov.agencies'
+      'Agencies': 'gov.agencies',
+
+      'G.Os': 'doc.gos',
+      'Policy Notes / Performance Budget / Citizen Charter': 'doc.policy',
+      'Rules & Regulations': 'doc.rules',
+      'Circulars & Notifications': 'doc.circulars',
+      'Announcements': 'doc.announcements',
+      'Acts': 'doc.acts'
     };
     return keyMap[label] ? t(keyMap[label]) : label;
   };
@@ -132,7 +155,7 @@ const Navbar = ({ hide, isAtTop = true }) => {
     { name: t('nav.home'),       path: '/',           hasSubmenu: false },
     { name: t('nav.services'),   path: '/services',   hasSubmenu: true  },
     { name: t('nav.government'), path: '/government', hasSubmenu: true  },
-    { name: t('nav.documents'),  path: '/documents',  hasSubmenu: false },
+    { name: t('nav.documents'),  path: '/documents',  hasSubmenu: true  },
     { name: t('nav.schemes'),    path: '/schemes',    hasSubmenu: true  },
     { name: t('nav.news'),       path: '/news',       hasSubmenu: false },
     { name: t('nav.help'),       path: '/help',       hasSubmenu: false },
