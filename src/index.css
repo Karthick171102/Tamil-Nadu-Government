@@ -2,6 +2,9 @@
 @import "tailwindcss";
 @source "../src";
 
+/* Override Tailwind v4 default media query dark mode to use class-based toggle */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* Dynamic Anek Tamil Font Override when lang-ta is applied */
 .lang-ta,
 .lang-ta body,
