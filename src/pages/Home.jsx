@@ -15,6 +15,40 @@ const Home = () => {
   const { language, t } = useLanguage();
   const [showKuralPopup, setShowKuralPopup] = useState(false);
 
+  const [kuralData, setKuralData] = useState({
+    Number: 2,
+    Line1: "கற்றதனால் ஆய பயனென்கொல் வாலறிவன்",
+    Line2: "நற்றாள் தொழாஅர் எனின்.",
+    Translation: "That lore is vain which does not fall  At His good feet who knoweth all",
+    mv: "தூய அறிவு வடிவாக விளங்கும் இறைவனுடைய நல்ல திருவடிகளை தொழாமல் இருப்பாரானால், அவர் கற்ற கல்வியினால் ஆகிய பயன் என்ன?",
+    explanation: "What Profit have those derived from learning, who worship not the good feet of Him who is possessed of pure knowledge ?"
+  });
+
+  useEffect(() => {
+    // Determine daily Kural index: May 20, 2026 is Day 1 (Kural 1), May 21, 2026 is Day 2 (Kural 2).
+    const baseDate = new Date(2026, 4, 20); // 4 = May in JS Date
+    const today = new Date();
+    
+    const baseMidnight = new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate());
+    const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    
+    const diffTime = todayMidnight - baseMidnight;
+    const diffDays = Math.max(0, Math.floor(diffTime / (1000 * 60 * 60 * 24)));
+    const targetNumber = (diffDays % 1330) + 1;
+
+    fetch('/thirukkural.json')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.kural && Array.isArray(data.kural)) {
+          const found = data.kural.find((k) => k.Number === targetNumber);
+          if (found) {
+            setKuralData(found);
+          }
+        }
+      })
+      .catch((err) => console.error('Failed to load dynamic Thirukkural:', err));
+  }, []);
+
   useEffect(() => {
     const hasSeenPopup = sessionStorage.getItem('hasSeenKuralPopup');
     if (!hasSeenPopup) {
@@ -24,6 +58,12 @@ const Home = () => {
       return () => clearTimeout(timer);
     }
   }, []);
+
+  const currentKuralNo = language === 'en' ? `Kural ${kuralData.Number}` : `குறள் ${kuralData.Number}`;
+  const currentKuralLine1 = kuralData.Line1;
+  const currentKuralLine2 = kuralData.Line2;
+  const currentKuralMeaningTa = kuralData.mv || kuralData.sp || kuralData.mk;
+  const currentKuralMeaningEn = kuralData.explanation || kuralData.Translation;
 
   const closeKuralPopup = () => {
     setShowKuralPopup(false);
@@ -100,21 +140,21 @@ const Home = () => {
       // 6. Draw Kural No / Title
       ctx.fillStyle = '#d4af37'; // gold color
       ctx.font = 'bold 22px "Space Grotesk", sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(t('kural.no').toUpperCase(), 400, 595);
+      ctx.textAlign = 'left';
+      ctx.fillText(currentKuralNo.toUpperCase(), 80, 595);
 
       // 7. Draw Tamil Kural Lines (bold, white)
       ctx.fillStyle = '#ffffff';
       ctx.font = '600 28px "Anek Tamil", sans-serif';
-      ctx.fillText(t('kural.textLine1'), 400, 650);
-      ctx.fillText(t('kural.textLine2'), 400, 695);
+      ctx.fillText(currentKuralLine1, 80, 650);
+      ctx.fillText(currentKuralLine2, 80, 695);
 
       // 8. Draw divider below kural text
       ctx.strokeStyle = 'rgba(212, 175, 55, 0.3)';
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.moveTo(200, 740);
-      ctx.lineTo(600, 740);
+      ctx.moveTo(80, 740);
+      ctx.lineTo(720, 740);
       ctx.stroke();
 
       // Helper to wrap text
@@ -144,11 +184,12 @@ const Home = () => {
       // 9. Draw Tamil explanation
       ctx.fillStyle = '#d4af37';
       ctx.font = 'bold 16px "Anek Tamil", sans-serif';
-      ctx.fillText('அதிகார விளக்கம் / Tamil Meaning', 400, 780);
+      ctx.textAlign = 'left';
+      ctx.fillText('அதிகார விளக்கம் / Tamil Meaning', 80, 780);
 
       const nextY = wrapText(
-        `"${t('kural.meaningTa')}"`,
-        400,
+        `"${currentKuralMeaningTa}"`,
+        80,
         815,
         640,
         30,
@@ -159,11 +200,12 @@ const Home = () => {
       // 10. Draw English explanation
       ctx.fillStyle = '#d4af37';
       ctx.font = 'bold 16px "Space Grotesk", sans-serif';
-      ctx.fillText('English Translation & Meaning', 400, nextY + 25);
+      ctx.textAlign = 'left';
+      ctx.fillText('English Translation & Meaning', 80, nextY + 25);
 
       wrapText(
-        `"${t('kural.meaningEn')}"`,
-        400,
+        `"${currentKuralMeaningEn}"`,
+        80,
         nextY + 60,
         640,
         28,
@@ -174,6 +216,7 @@ const Home = () => {
       // 11. Footer credits
       ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
       ctx.font = '14px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'center';
       ctx.fillText('Tamil Nadu Government Portal  •  www.tn.gov.in', 400, 1140);
 
       return canvas;
@@ -189,7 +232,7 @@ const Home = () => {
       const canvas = await generateKuralCanvas();
       const dataUrl = canvas.toDataURL('image/png');
       const link = document.createElement('a');
-      link.download = `${t('kural.no').replace(/\s+/g, '_')}_Thirukkural.png`;
+      link.download = `${currentKuralNo.replace(/\s+/g, '_')}_Thirukkural.png`;
       link.href = dataUrl;
       document.body.appendChild(link);
       link.click();
@@ -207,7 +250,7 @@ const Home = () => {
           alert('Could not generate sharing image.');
           return;
         }
-        const fileName = `${t('kural.no').replace(/\s+/g, '_')}_Thirukkural.png`;
+        const fileName = `${currentKuralNo.replace(/\s+/g, '_')}_Thirukkural.png`;
         const file = new File([blob], fileName, { type: 'image/png' });
 
         if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
@@ -215,7 +258,7 @@ const Home = () => {
             await navigator.share({
               files: [file],
               title: t('kural.title'),
-              text: `${t('kural.no')} - ${t('kural.textLine1')} / ${t('kural.textLine2')}`,
+              text: `${currentKuralNo} - ${currentKuralLine1} / ${currentKuralLine2}`,
             });
           } catch (shareError) {
             if (shareError.name !== 'AbortError') {
@@ -532,7 +575,7 @@ const Home = () => {
       <section className="py-20 relative overflow-hidden">
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-5xl mx-auto overflow-hidden">
-            <div className="p-8 md:p-12 flex flex-col md:flex-row items-center gap-8 md:gap-12">
+            <div className="p-0 md:p-12 flex flex-col md:flex-row items-center gap-8 md:gap-12">
               <div className="w-full max-w-[240px] aspect-square shrink-0 rounded-[12px] overflow-hidden border border-gray-100 dark:border-white/10 bg-gray-50 dark:bg-white/5 relative z-20">
                 <img src="/thiruvalluvar.png" alt="Thiruvalluvar" className="w-full h-full object-contain" />
               </div>
@@ -543,22 +586,22 @@ const Home = () => {
                   <span className="text-sm font-bold uppercase tracking-widest text-gray-400">{t('kural.title')}</span>
                 </div>
 
-                <h2 className="text-[clamp(1.1rem,4.5vw,2.5rem)] font-black text-gray-900 dark:text-white mb-6 leading-tight font-anek-tamil">
-                  <div className="mb-2 whitespace-nowrap">{t('kural.textLine1')}</div>
-                  <div className="whitespace-nowrap">{t('kural.textLine2')}</div>
+                <h2 className="text-xs md:text-[clamp(1.5rem,4.5vw,2.5rem)] font-black text-gray-900 dark:text-white mb-6 leading-tight font-anek-tamil">
+                  <div className="mb-2 whitespace-nowrap">{currentKuralLine1}</div>
+                  <div className="whitespace-nowrap">{currentKuralLine2}</div>
                 </h2>
 
                 <div className="space-y-6">
                   <div>
                     <h4 className="text-[10px] font-bold uppercase tracking-wider text-[#005600] dark:text-green-400 mb-2">Tamil Meaning</h4>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed italic font-anek-tamil">
-                      "{t('kural.meaningTa')}"
+                    <p className="text-gray-600 dark:text-gray-400 text-xs md:text-sm leading-relaxed italic font-anek-tamil">
+                      "{currentKuralMeaningTa}"
                     </p>
                   </div>
                   <div>
                     <h4 className="text-[10px] font-bold uppercase tracking-wider text-[#005600] dark:text-green-400 mb-2">English Meaning</h4>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed italic">
-                      "{t('kural.meaningEn')}"
+                    <p className="text-gray-600 dark:text-gray-400 text-xs md:text-sm leading-relaxed italic">
+                      "{currentKuralMeaningEn}"
                     </p>
                   </div>
 
@@ -617,20 +660,20 @@ const Home = () => {
 
                   <div className="flex-1 p-8 md:p-10 flex flex-col justify-center">
                     <div className="text-[#005600] dark:text-green-400 text-xs font-bold uppercase tracking-[0.2em] mb-4">
-                      {t('kural.no')}
+                      {currentKuralNo}
                     </div>
 
-                    <h3 className="text-[clamp(1rem,4.2vw,2rem)] font-black text-gray-900 dark:text-white mb-6 leading-tight font-anek-tamil">
-                      <div className="mb-2 whitespace-nowrap">{t('kural.textLine1')}</div>
-                      <div className="whitespace-nowrap">{t('kural.textLine2')}</div>
+                    <h3 className="text-xs md:text-[clamp(1.2rem,4.2vw,2rem)] font-black text-gray-900 dark:text-white mb-6 leading-tight font-anek-tamil">
+                      <div className="mb-2 whitespace-nowrap">{currentKuralLine1}</div>
+                      <div className="whitespace-nowrap">{currentKuralLine2}</div>
                     </h3>
 
                     <div className="space-y-4 mb-8">
                       <p className="text-gray-500 dark:text-gray-400 text-xs leading-relaxed italic font-anek-tamil">
-                        "{t('kural.meaningTa')}"
+                        "{currentKuralMeaningTa}"
                       </p>
                       <p className="text-gray-400 dark:text-gray-500 text-xs leading-relaxed italic">
-                        "{t('kural.meaningEn')}"
+                        "{currentKuralMeaningEn}"
                       </p>
                     </div>
 

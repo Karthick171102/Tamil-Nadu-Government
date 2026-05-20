@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Anek+Tamil:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
+@theme {
+  --color-green-400: var(--green-color-400);
+}
 @source "../src";
 
 /* Override Tailwind v4 default media query dark mode to use class-based toggle */
@@ -30,6 +33,7 @@
 }
 
 :root {
+  --green-color-400: #4ade80;
   --bg-primary: #f9f7f4;
   --bg-secondary: #ffffff;
   --bg-tertiary: #f0ede8;
@@ -67,6 +71,7 @@
 
 /* ── Dark Theme ────────────────────────────────────────────── */
 .dark {
+  --green-color-400: #008250;
   --bg-primary: #0a0f0a;
   --bg-secondary: #111811;
   --bg-tertiary: #1a221a;
@@ -76,9 +81,9 @@
   --text-secondary: #9ca89c;
   --text-tertiary: #5a665a;
 
-  --accent-primary: #00a800;
-  --accent-secondary: #00c000;
-  --accent-glow: rgba(0, 168, 0, 0.3);
+  --accent-primary: #008250;
+  --accent-secondary: #00a666;
+  --accent-glow: rgba(0, 130, 80, 0.3);
 
   --border-color: rgba(255, 255, 255, 0.08);
   --glass-border: 1px solid rgba(255, 255, 255, 0.08);
@@ -86,7 +91,7 @@
 
   --card-bg: #111811;
   --card-border: rgba(255, 255, 255, 0.06);
-  --card-hover-border: rgba(0, 168, 0, 0.25);
+  --card-hover-border: rgba(0, 130, 80, 0.25);
   --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
   --card-hover-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
 
@@ -359,34 +364,82 @@ button {
   background-color: rgba(0, 168, 0, 0.08) !important;
 }
 
-/* ── Green text overrides for dark mode ─────────────────────── */
+/* ── Green text and background overrides for dark mode ──────── */
 .dark .text-\[\#005600\] {
-  color: #00c000 !important;
+  color: #008250 !important;
 }
 
 .dark .group-hover\:text-\[\#005600\]:hover,
 .dark .group:hover .group-hover\:text-\[\#005600\] {
-  color: #00e000 !important;
+  color: #00a666 !important;
 }
 
 .dark .hover\:text-\[\#005600\]:hover {
-  color: #00e000 !important;
+  color: #00a666 !important;
 }
 
-.dark .hover\:border-\[\#005600\]:hover {
-  border-color: #00c000 !important;
+.dark .bg-\[\#005600\] {
+  background-color: #008250 !important;
 }
 
-.dark .hover\:border-\[\#005600\]\/30:hover {
-  border-color: rgba(0, 192, 0, 0.3) !important;
+.dark .group-hover\:bg-\[\#005600\]:hover,
+.dark .group:hover .group-hover\:bg-\[\#005600\] {
+  background-color: #008250 !important;
+}
+
+.dark .hover\:bg-\[\#005600\]:hover {
+  background-color: #008250 !important;
+}
+
+.dark .bg-\[\#005600\]\/8 {
+  background-color: rgba(0, 130, 80, 0.08) !important;
 }
 
 .dark .bg-\[\#005600\]\/10 {
-  background-color: rgba(0, 168, 0, 0.15) !important;
+  background-color: rgba(0, 130, 80, 0.15) !important;
 }
 
 .dark .hover\:bg-\[\#005600\]\/5:hover {
-  background-color: rgba(0, 168, 0, 0.1) !important;
+  background-color: rgba(0, 130, 80, 0.05) !important;
+}
+
+.dark .hover\:border-\[\#005600\]:hover {
+  border-color: #008250 !important;
+}
+
+.dark .hover\:border-\[\#005600\]\/30:hover {
+  border-color: rgba(0, 130, 80, 0.3) !important;
+}
+
+.dark .focus-within\:border-\[\#005600\]:focus-within {
+  border-color: #008250 !important;
+}
+
+.dark .focus-within\:ring-\[\#005600\]\/20:focus-within {
+  --tw-ring-color: rgba(0, 130, 80, 0.2) !important;
+}
+
+.dark .shadow-\[\#005600\]\/20 {
+  --tw-shadow-color: rgba(0, 130, 80, 0.2) !important;
+  --tw-shadow: var(--tw-shadow-colored) !important;
+}
+
+.dark .hover\:bg-\[\#004d00\]:hover {
+  background-color: #006941 !important;
+}
+
+.dark .text-\[\#008a00\] {
+  color: #008250 !important;
+}
+
+/* ── Fix card icon hover blend in dark mode ──────────────────── */
+/* group-hover:text-white must beat the !important text-[#005600] override */
+.dark .group:hover .group-hover\:text-white {
+  color: #ffffff !important;
+}
+
+.dark .group:hover .group-hover\:text-black {
+  color: #000000 !important;
 }
 
 /* PixelCard canvas — lower opacity in dark mode */

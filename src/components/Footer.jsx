@@ -38,15 +38,31 @@ const Footer = () => {
     { label: t('schemes.cat.category'), path: '/schemes' },
   ];
 
+  const footerAccent = isDark ? '#008250' : '#00a800';
+  const footerHover = isDark ? '#00a666' : '#00c000';
+  const footerBorder = isDark ? '#008250' : '#005600';
+  const footerGlow1 = isDark ? 'rgba(0, 130, 80, 0.1)' : 'rgba(0, 86, 0, 0.1)';
+  const footerGlow2 = isDark ? 'rgba(0, 130, 80, 0.05)' : 'rgba(0, 86, 0, 0.05)';
+  const footerBtnHoverBg = isDark ? 'rgba(0, 130, 80, 0.2)' : 'rgba(0, 86, 0, 0.2)';
+
   return (
-    <footer className="relative bg-[#040904] text-gray-300 border-t border-[#005600]/25 pt-16 pb-8 z-10 shrink-0 w-full overflow-hidden select-none">
+    <footer 
+      className="relative bg-[#040904] text-gray-300 border-t pt-16 pb-8 z-10 shrink-0 w-full overflow-hidden select-none"
+      style={{
+        borderColor: isDark ? 'rgba(0, 130, 80, 0.25)' : 'rgba(0, 86, 0, 0.25)',
+        '--footer-accent': footerAccent,
+        '--footer-hover': footerHover,
+        '--footer-border': footerBorder,
+        '--footer-btn-hover-bg': footerBtnHoverBg,
+      }}
+    >
       {/* Interactive DotGrid Background */}
       <div className="absolute inset-0 z-0 opacity-[1] pointer-events-auto">
         <DotGrid
           dotSize={3}
           gap={20}
           baseColor="#0a2a0a"
-          activeColor="#00a800"
+          activeColor={footerAccent}
           proximity={100}
           shockRadius={200}
           shockStrength={3}
@@ -56,8 +72,14 @@ const Footer = () => {
       </div>
 
       {/* Subtle background glow accents */}
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-[#005600]/10 via-transparent to-transparent pointer-events-none rounded-bl-full z-[1]" />
-      <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-[#005600]/5 via-transparent to-transparent pointer-events-none rounded-br-full z-[1]" />
+      <div 
+        className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl via-transparent to-transparent pointer-events-none rounded-bl-full z-[1]" 
+        style={{ backgroundImage: `linear-gradient(to top left, ${footerGlow1}, transparent)` }}
+      />
+      <div 
+        className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br via-transparent to-transparent pointer-events-none rounded-br-full z-[1]" 
+        style={{ backgroundImage: `linear-gradient(to bottom right, ${footerGlow2}, transparent)` }}
+      />
 
       <div className="container mx-auto px-6 relative z-10">
         {/* Main Footer Grid */}
@@ -71,7 +93,10 @@ const Footer = () => {
                 <h3 className="font-outfit font-bold text-white text-base tracking-wider uppercase leading-tight">
                   {language === 'en' ? 'Government' : 'தமிழ்நாடு'}
                 </h3>
-                <p className="font-outfit font-semibold text-[#00a800] text-xs tracking-widest uppercase leading-none mt-1">
+                <p 
+                  className="font-outfit font-semibold text-xs tracking-widest uppercase leading-none mt-1"
+                  style={{ color: 'var(--footer-accent)' }}
+                >
                   {language === 'en' ? 'of Tamil Nadu' : 'அரசு'}
                 </p>
               </div>
@@ -118,7 +143,7 @@ const Footer = () => {
                   rel="noreferrer"
                   whileHover={{ scale: 1.15, y: -2 }}
                   whileTap={{ scale: 0.9 }}
-                  className="w-8 h-8 rounded-full bg-white/5 border border-white/10 hover:border-[#00a800] flex items-center justify-center text-gray-400 hover:text-white hover:bg-[#005600]/20 transition-all duration-300 cursor-pointer"
+                  className="w-8 h-8 rounded-full bg-white/5 border border-white/10 hover:border-[var(--footer-accent)] hover:bg-[var(--footer-btn-hover-bg)] flex items-center justify-center text-gray-400 hover:text-white transition-all duration-300 cursor-pointer"
                 >
                   {social.icon}
                 </motion.a>
@@ -128,7 +153,7 @@ const Footer = () => {
 
           {/* Column 2: Navigation Links */}
           <div className="flex flex-col gap-4">
-            <h4 className="font-outfit font-bold text-white text-sm tracking-wider uppercase border-l-2 border-[#005600] pl-3">
+            <h4 className="font-outfit font-bold text-white text-sm tracking-wider uppercase border-l-2 border-[var(--footer-border)] pl-3">
               {language === 'en' ? 'Quick Links' : 'விரைவு இணைப்புகள்'}
             </h4>
             <ul className="flex flex-col gap-2.5 mt-2">
@@ -136,9 +161,9 @@ const Footer = () => {
                 <li key={idx}>
                   <Link 
                     to={link.path}
-                    className="text-gray-400 hover:text-[#00c000] text-xs font-medium transition-colors duration-200 flex items-center gap-2 group"
+                    className="text-gray-400 hover:text-[var(--footer-hover)] text-xs font-medium transition-colors duration-200 flex items-center gap-2 group"
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-[#00c000] transition-colors" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-[var(--footer-hover)] transition-colors" />
                     {link.label}
                   </Link>
                 </li>
@@ -148,7 +173,7 @@ const Footer = () => {
 
           {/* Column 3: Megamenu Services */}
           <div className="flex flex-col gap-4">
-            <h4 className="font-outfit font-bold text-white text-sm tracking-wider uppercase border-l-2 border-[#005600] pl-3">
+            <h4 className="font-outfit font-bold text-white text-sm tracking-wider uppercase border-l-2 border-[var(--footer-border)] pl-3">
               {language === 'en' ? 'Online Services' : 'இணையச் சேவைகள்'}
             </h4>
             <ul className="flex flex-col gap-2.5 mt-2">
@@ -156,9 +181,9 @@ const Footer = () => {
                 <li key={idx}>
                   <Link 
                     to={link.path}
-                    className="text-gray-400 hover:text-[#00c000] text-xs font-medium transition-colors duration-200 flex items-center gap-2 group"
+                    className="text-gray-400 hover:text-[var(--footer-hover)] text-xs font-medium transition-colors duration-200 flex items-center gap-2 group"
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-[#00c000] transition-colors" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-[var(--footer-hover)] transition-colors" />
                     {link.label}
                   </Link>
                 </li>
@@ -168,7 +193,7 @@ const Footer = () => {
 
           {/* Column 4: Megamenu Government & Schemes */}
           <div className="flex flex-col gap-4">
-            <h4 className="font-outfit font-bold text-white text-sm tracking-wider uppercase border-l-2 border-[#005600] pl-3">
+            <h4 className="font-outfit font-bold text-white text-sm tracking-wider uppercase border-l-2 border-[var(--footer-border)] pl-3">
               {language === 'en' ? 'Governance & Schemes' : 'ஆளுமை & திட்டங்கள்'}
             </h4>
             <ul className="flex flex-col gap-2.5 mt-2">
@@ -176,9 +201,9 @@ const Footer = () => {
                 <li key={idx}>
                   <Link 
                     to={link.path}
-                    className="text-gray-400 hover:text-[#00c000] text-xs font-medium transition-colors duration-200 flex items-center gap-2 group"
+                    className="text-gray-400 hover:text-[var(--footer-hover)] text-xs font-medium transition-colors duration-200 flex items-center gap-2 group"
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-[#00c000] transition-colors" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-[var(--footer-hover)] transition-colors" />
                     {link.label}
                   </Link>
                 </li>
@@ -188,12 +213,12 @@ const Footer = () => {
 
           {/* Column 5: Secretariat & Contact */}
           <div className="flex flex-col gap-4">
-            <h4 className="font-outfit font-bold text-white text-sm tracking-wider uppercase border-l-2 border-[#005600] pl-3">
+            <h4 className="font-outfit font-bold text-white text-sm tracking-wider uppercase border-l-2 border-[var(--footer-border)] pl-3">
               {language === 'en' ? 'Contact Details' : 'தொடர்பு முகவரி'}
             </h4>
             <ul className="flex flex-col gap-4 mt-2">
               <li className="flex gap-3 items-start text-xs text-gray-400">
-                <MapPin size={16} className="text-[#00a800] shrink-0 mt-0.5" />
+                <MapPin size={16} className="text-[var(--footer-accent)] shrink-0 mt-0.5" />
                 <span className="leading-relaxed">
                   {language === 'en' 
                     ? 'Secretariat, Fort St. George, Chennai - 600009, Tamil Nadu, India.' 
@@ -201,12 +226,12 @@ const Footer = () => {
                 </span>
               </li>
               <li className="flex gap-3 items-center text-xs text-gray-400">
-                <Phone size={16} className="text-[#00a800] shrink-0" />
+                <Phone size={16} className="text-[var(--footer-accent)] shrink-0" />
                 <span>+91-44-2567 1878</span>
               </li>
               <li className="flex gap-3 items-center text-xs text-gray-400">
-                <Mail size={16} className="text-[#00a800] shrink-0" />
-                <a href="mailto:webmanager@tn.gov.in" className="hover:text-[#00c000] transition-colors">
+                <Mail size={16} className="text-[var(--footer-accent)] shrink-0" />
+                <a href="mailto:webmanager@tn.gov.in" className="hover:text-[var(--footer-hover)] transition-colors">
                   webmanager@tn.gov.in
                 </a>
               </li>
@@ -221,7 +246,7 @@ const Footer = () => {
         {/* Bottom Bar: Copyrights & Policy Links */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="text-gray-500 text-[11px] font-medium text-center md:text-left flex items-center gap-1.5">
-            <ShieldCheck size={14} className="text-[#008a00]" />
+            <ShieldCheck size={14} className="text-[var(--footer-accent)]" />
             <span>
               {language === 'en' 
                 ? `© ${currentYear} Government of Tamil Nadu. All rights reserved.` 
@@ -233,20 +258,20 @@ const Footer = () => {
             {/* Dark Mode Toggle */}
             <button
               onClick={toggleTheme}
-              className="hover:text-[#00c000] text-gray-400 font-semibold transition-all flex items-center gap-1.5 cursor-pointer uppercase tracking-wider pr-4 border-r border-white/10"
+              className="hover:text-[var(--footer-hover)] text-gray-400 font-semibold transition-all flex items-center gap-1.5 cursor-pointer uppercase tracking-wider pr-4 border-r border-white/10"
               aria-label="Toggle Theme"
             >
-              {isDark ? <Sun size={14} className="text-amber-400" /> : <Moon size={14} className="text-[#00a800]" />}
+              {isDark ? <Sun size={14} className="text-amber-400" /> : <Moon size={14} className="text-[var(--footer-accent)]" />}
               <span>{isDark ? (language === 'en' ? 'Light' : 'ஒளி') : (language === 'en' ? 'Dark' : 'இருள்')}</span>
             </button>
 
             {/* Language Switcher */}
             <button
               onClick={toggleLanguage}
-              className="hover:text-[#00c000] text-gray-400 font-semibold transition-colors flex items-center gap-1.5 cursor-pointer uppercase tracking-wider"
+              className="hover:text-[var(--footer-hover)] text-gray-400 font-semibold transition-colors flex items-center gap-1.5 cursor-pointer uppercase tracking-wider"
               aria-label="Switch Language"
             >
-              <svg className="w-3.5 h-3.5 fill-current opacity-75 text-[#00a800] shrink-0" viewBox="0 0 24 24">
+              <svg className="w-3.5 h-3.5 fill-current opacity-75 text-[var(--footer-accent)] shrink-0" viewBox="0 0 24 24">
                 <path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z" />
               </svg>
               <span>{language === 'ta' ? 'English' : 'தமிழ்'}</span>

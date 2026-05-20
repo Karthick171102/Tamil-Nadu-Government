@@ -57,7 +57,7 @@ const submenus = {
         { label: 'Census',             path: '/services' },
         { label: 'Statistics',         path: '/services' },
         { label: 'Employment Details', path: '/services' },
-        { label: 'Grievances',         path: '/services' },
+        { label: 'Grievances',         path: '/services/grievances' },
       ],
       [
         { label: 'Forms',              path: '/services' },
@@ -336,7 +336,16 @@ const Navbar = ({ hide, isAtTop = true }) => {
         {/* Left */}
         <div className="flex-1 flex justify-start">
           <Link to="/" className="flex items-center gap-3 text-xl font-bold">
-            <img src={isDark ? '/logo-dark.svg' : '/tn-logo.svg'} alt="TN Logo" className="w-[250px] object-contain" />
+            <img
+              src={
+                language === 'en'
+                  ? (isDark ? '/tn-logo-en-dark.svg' : '/tn-logo-en.svg')
+                  : (isDark ? '/logo-dark.svg' : '/tn-logo.svg')
+              }
+              alt="TN Logo"
+              className="object-contain"
+              style={{ height: '44px', width: 'auto', maxWidth: '260px' }}
+            />
           </Link>
         </div>
 
@@ -425,7 +434,7 @@ const Navbar = ({ hide, isAtTop = true }) => {
           {/* Search Button */}
           <button
             onClick={() => setSearchOverlayOpen(true)}
-            className="hidden xl:flex items-center justify-center w-10 h-10 rounded-full bg-white border border-black/5 shadow-[0_4px_20px_rgba(0,0,0,0.05)] text-gray-500 hover:text-[#005600] hover:border-[#005600]/30 hover:shadow-[0_4px_20px_rgba(0,86,0,0.1)] transition-all duration-300 cursor-pointer"
+            className="hidden xl:flex items-center justify-center w-10 h-10 rounded-full bg-white border border-black/5 shadow-[0_4px_20px_rgba(0,0,0,0.05)] text-gray-500 hover:text-[#005600] hover:border-[#005600]/30 hover:shadow-[0_4px_20px_rgba(0,86,0,0.1)] dark:hover:shadow-[0_4px_20px_rgba(0,130,80,0.25)] transition-all duration-300 cursor-pointer"
             aria-label="Search"
           >
             <Search size={18} />
@@ -453,8 +462,16 @@ const Navbar = ({ hide, isAtTop = true }) => {
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 shrink-0">
               <Link to="/" className="flex items-center gap-3 text-lg font-bold" onClick={() => setMobileMenuOpen(false)}>
-                <img src={isDark ? '/logo-dark.svg' : '/tn-logo.svg'} alt="TN Logo" className="w-[250px] object-contain" />
-                
+                <img
+                  src={
+                    language === 'en'
+                      ? (isDark ? '/tn-logo-en-dark.svg' : '/tn-logo-en.svg')
+                      : (isDark ? '/logo-dark.svg' : '/tn-logo.svg')
+                  }
+                  alt="TN Logo"
+                  className="object-contain"
+                  style={{ height: '40px', width: 'auto', maxWidth: '240px' }}
+                />
               </Link>
               <div className="flex items-center gap-2">
                 <button
