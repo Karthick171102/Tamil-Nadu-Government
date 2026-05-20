@@ -561,6 +561,23 @@ const Home = () => {
                       "{t('kural.meaningEn')}"
                     </p>
                   </div>
+
+                  <div className="flex gap-4 pt-4 max-w-xs md:max-w-sm">
+                    <button
+                      onClick={handleDownloadKural}
+                      className="flex-1 py-2.5 bg-[#005600] hover:bg-[#004d00] text-white text-[10px] font-bold uppercase tracking-widest transition-all duration-300 rounded-[2px] shadow-lg shadow-[#005600]/20 flex items-center justify-center gap-2 cursor-pointer"
+                    >
+                      <Download size={12} />
+                      {language === 'en' ? 'Download' : 'பதிவிறக்கு'}
+                    </button>
+                    <button
+                      onClick={handleShareKural}
+                      className="flex-1 py-2.5 bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 text-gray-800 dark:text-white text-[10px] font-bold uppercase tracking-widest transition-all duration-300 rounded-[2px] flex items-center justify-center gap-2 cursor-pointer"
+                    >
+                      <Share2 size={12} />
+                      {language === 'en' ? 'Share' : 'பகிர்'}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -594,8 +611,8 @@ const Home = () => {
                 </button>
 
                 <div className="flex flex-col md:flex-row relative z-20">
-                  <div className="w-full md:w-1/2 h-64 md:h-auto md:aspect-square bg-black p-0">
-                    <img src="/thiruvalluvar.png" alt="Thiruvalluvar" className="w-full h-full object-cover rounded-[12px] md:rounded-none" />
+                  <div className="w-full md:w-1/2 h-64 md:h-auto md:aspect-square bg-gray-50 dark:bg-[#121212] flex items-center justify-center p-4">
+                    <img src="/thiruvalluvar.png" alt="Thiruvalluvar" className="w-full h-full object-contain rounded-[12px] md:rounded-none" />
                   </div>
 
                   <div className="flex-1 p-8 md:p-10 flex flex-col justify-center">
