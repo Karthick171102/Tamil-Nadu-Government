@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ChevronDown, Search, ArrowRight, FileBadge, FileText, Car, HeartPulse, GraduationCap, Tractor, Building2, Users, Wallet, Baby, Home as HomeIcon, Briefcase, Globe, MapPin, HelpCircle } from 'lucide-react';
+import { Menu, X, ChevronDown, Search, ArrowRight, FileBadge, FileText, Car, HeartPulse, GraduationCap, Tractor, Building2, Users, Wallet, Baby, Home as HomeIcon, Briefcase, Globe, MapPin, HelpCircle, Volume2, VolumeX } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
 import './Navbar.css';
@@ -118,6 +118,71 @@ const Navbar = ({ hide, isAtTop = true }) => {
   const navigate = useNavigate();
   const timeoutRef = useRef(null);
 
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(null);
+
+  // Initialize and handle audio controls
+  useEffect(() => {
+    audioRef.current = new Audio('/tamil_thai_vaazhthu.mp3');
+
+    const playAudio = () => {
+      if (audioRef.current) {
+        audioRef.current.play()
+          .then(() => {
+            setIsPlaying(true);
+          })
+          .catch((err) => {
+            console.log("Autoplay blocked, waiting for user interaction.", err);
+          });
+      }
+    };
+
+    // Attempt autoplay immediately
+    playAudio();
+
+    // Fallback trigger: play on first user interaction if blocked
+    const handleInteraction = () => {
+      if (audioRef.current && audioRef.current.paused) {
+        playAudio();
+      }
+      document.removeEventListener('click', handleInteraction);
+      document.removeEventListener('keydown', handleInteraction);
+    };
+
+    document.addEventListener('click', handleInteraction);
+    document.addEventListener('keydown', handleInteraction);
+
+    const handleEnded = () => {
+      setIsPlaying(false);
+    };
+    audioRef.current.addEventListener('ended', handleEnded);
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.removeEventListener('ended', handleEnded);
+      }
+      document.removeEventListener('click', handleInteraction);
+      document.removeEventListener('keydown', handleInteraction);
+    };
+  }, []);
+
+  const togglePlayPause = () => {
+    if (!audioRef.current) return;
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current.play()
+        .then(() => {
+          setIsPlaying(true);
+        })
+        .catch((err) => {
+          console.error("Audio play failed:", err);
+        });
+    }
+  };
+
   const translateMenuLabel = (label) => {
     const keyMap = {
       'Online Services': 'services.cat.onlineServices',
@@ -225,16 +290,45 @@ const Navbar = ({ hide, isAtTop = true }) => {
     >
       {/* Slim Strip (36px tall) */}
       <div className="h-[36px] bg-[#021a02]/90 backdrop-blur-md border-b border-white/5 flex items-center shadow-[inset_0_-1px_0_rgba(255,255,255,0.05)] shrink-0 select-none">
-        <div className="container mx-auto px-6 flex items-center justify-center gap-2 text-[11px] font-medium text-white/70">
+        <div className="container mx-auto px-6 flex items-center justify-center gap-2 text-[11px] font-medium text-white/70 whitespace-nowrap overflow-x-auto scrollbar-none">
           <span>
             {language === 'ta' ? 'மொழியை மாற்றவும்:' : 'Switch Language:'}
           </span>
           <button
             onClick={toggleLanguage}
-            className="text-[#00e000] hover:text-white font-bold underline underline-offset-4 decoration-[#00e000]/40 hover:decoration-white transition-all duration-300 cursor-pointer font-outfit uppercase tracking-wider pl-1"
+            className="text-[#00e000] hover:text-white font-bold underline underline-offset-4 decoration-[#00e000]/40 hover:decoration-white transition-all duration-300 cursor-pointer font-outfit uppercase tracking-wider pl-1 mr-3"
           >
             {language === 'ta' ? 'English' : 'தமிழ்'}
           </button>
+
+          <span className="text-white/20 select-none mr-3">|</span>
+
+          <div className="flex items-center gap-1.5">
+            <span>
+              {language === 'ta' ? 'தமிழ்த்தாய் வாழ்த்து:' : 'Tamil Thai Vaazhthu:'}
+            </span>
+            <button
+              onClick={togglePlayPause}
+              className="flex items-center gap-1.5 text-[#00e000] hover:text-white transition-colors duration-300 cursor-pointer px-1 py-0.5 rounded focus:outline-none"
+              title={isPlaying ? (language === 'ta' ? 'நிறுத்து' : 'Pause') : (language === 'ta' ? 'இயக்கு' : 'Play')}
+            >
+              {isPlaying ? (
+                <>
+                  <Volume2 size={13} className="animate-pulse" />
+                  <span className="font-outfit uppercase tracking-wider text-[10px] font-bold">
+                    {language === 'ta' ? 'நிறுத்து' : 'Pause'}
+                  </span>
+                </>
+              ) : (
+                <>
+                  <VolumeX size={13} className="text-white/40" />
+                  <span className="font-outfit uppercase tracking-wider text-[10px] font-bold text-white/40 hover:text-white transition-colors">
+                    {language === 'ta' ? 'இயக்கு' : 'Play'}
+                  </span>
+                </>
+              )}
+            </button>
+          </div>
         </div>
       </div>
 

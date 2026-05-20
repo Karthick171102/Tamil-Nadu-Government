@@ -4,7 +4,7 @@ import {
   ArrowRight, Play, Pause, ChevronLeft, ChevronRight, Search, 
   Globe, Shield, FileText, Building2, MapPin, HelpCircle, 
   X, Quote, FileBadge, GraduationCap, Tractor, Users, 
-  Landmark, Bell, Megaphone, Calendar
+  Landmark, Bell, Megaphone, Calendar, Download, Share2
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
@@ -28,6 +28,218 @@ const Home = () => {
   const closeKuralPopup = () => {
     setShowKuralPopup(false);
     sessionStorage.setItem('hasSeenKuralPopup', 'true');
+  };
+
+  const generateKuralCanvas = async () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 800;
+    canvas.height = 1200;
+    const ctx = canvas.getContext('2d');
+
+    // 1. Draw beautiful dark green gradient background
+    const grad = ctx.createLinearGradient(0, 0, 0, 1200);
+    grad.addColorStop(0, '#002e00'); // deep green
+    grad.addColorStop(0.5, '#001a00'); // dark green
+    grad.addColorStop(1, '#000c00'); // rich almost black green
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 800, 1200);
+
+    // 2. Draw gold borders
+    ctx.strokeStyle = '#d4af37';
+    ctx.lineWidth = 6;
+    ctx.strokeRect(20, 20, 760, 1160);
+    ctx.lineWidth = 2;
+    ctx.strokeRect(28, 28, 744, 1144);
+
+    // Helper to load image
+    const loadImage = (src) => {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.src = src;
+        img.onload = () => resolve(img);
+        img.onerror = (e) => reject(new Error(`Failed to load image: ${src}`));
+      });
+    };
+
+    try {
+      // Load both logo and thiruvalluvar image
+      const [logoImg, valluvarImg] = await Promise.all([
+        loadImage('/logo-dark.svg'),
+        loadImage('/thiruvalluvar.png')
+      ]);
+
+      // 3. Draw logo (centered at top)
+      const logoW = 340;
+      const logoH = 65;
+      const logoX = (800 - logoW) / 2;
+      const logoY = 65;
+      ctx.drawImage(logoImg, logoX, logoY, logoW, logoH);
+
+      // 4. Draw horizontal separator below logo
+      ctx.strokeStyle = 'rgba(212, 175, 55, 0.4)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(100, 160);
+      ctx.lineTo(700, 160);
+      ctx.stroke();
+
+      // 5. Draw Thiruvalluvar Portrait
+      const valluvarSize = 340;
+      const valluvarX = (800 - valluvarSize) / 2;
+      const valluvarY = 195;
+      
+      // Draw image
+      ctx.drawImage(valluvarImg, valluvarX, valluvarY, valluvarSize, valluvarSize);
+      
+      // Draw gold border around portrait
+      ctx.strokeStyle = '#d4af37';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(valluvarX - 2, valluvarY - 2, valluvarSize + 4, valluvarSize + 4);
+
+      // 6. Draw Kural No / Title
+      ctx.fillStyle = '#d4af37'; // gold color
+      ctx.font = 'bold 22px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(t('kural.no').toUpperCase(), 400, 595);
+
+      // 7. Draw Tamil Kural Lines (bold, white)
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '600 28px "Anek Tamil", sans-serif';
+      ctx.fillText(t('kural.textLine1'), 400, 650);
+      ctx.fillText(t('kural.textLine2'), 400, 695);
+
+      // 8. Draw divider below kural text
+      ctx.strokeStyle = 'rgba(212, 175, 55, 0.3)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(200, 740);
+      ctx.lineTo(600, 740);
+      ctx.stroke();
+
+      // Helper to wrap text
+      const wrapText = (text, x, y, maxWidth, lineHeight, font, color) => {
+        ctx.font = font;
+        ctx.fillStyle = color;
+        const words = text.split(' ');
+        let line = '';
+        let currentY = y;
+        
+        for (let n = 0; n < words.length; n++) {
+          const testLine = line + words[n] + ' ';
+          const metrics = ctx.measureText(testLine);
+          const testWidth = metrics.width;
+          if (testWidth > maxWidth && n > 0) {
+            ctx.fillText(line.trim(), x, currentY);
+            line = words[n] + ' ';
+            currentY += lineHeight;
+          } else {
+            line = testLine;
+          }
+        }
+        ctx.fillText(line.trim(), x, currentY);
+        return currentY + lineHeight;
+      };
+
+      // 9. Draw Tamil explanation
+      ctx.fillStyle = '#d4af37';
+      ctx.font = 'bold 16px "Anek Tamil", sans-serif';
+      ctx.fillText('அதிகார விளக்கம் / Tamil Meaning', 400, 780);
+      
+      const nextY = wrapText(
+        `"${t('kural.meaningTa')}"`, 
+        400, 
+        815, 
+        640, 
+        30, 
+        'italic 20px "Anek Tamil", sans-serif', 
+        '#e0e0e0'
+      );
+
+      // 10. Draw English explanation
+      ctx.fillStyle = '#d4af37';
+      ctx.font = 'bold 16px "Space Grotesk", sans-serif';
+      ctx.fillText('English Translation & Meaning', 400, nextY + 25);
+
+      wrapText(
+        `"${t('kural.meaningEn')}"`, 
+        400, 
+        nextY + 60, 
+        640, 
+        28, 
+        'italic 18px "Space Grotesk", sans-serif', 
+        '#e0e0e0'
+      );
+
+      // 11. Footer credits
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+      ctx.font = '14px "Space Grotesk", sans-serif';
+      ctx.fillText('Tamil Nadu Government Portal  •  www.tn.gov.in', 400, 1140);
+
+      return canvas;
+    } catch (error) {
+      console.error('Error rendering canvas:', error);
+      alert('Could not render Thirukkural card.');
+      throw error;
+    }
+  };
+
+  const handleDownloadKural = async () => {
+    try {
+      const canvas = await generateKuralCanvas();
+      const dataUrl = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.download = `${t('kural.no').replace(/\s+/g, '_')}_Thirukkural.png`;
+      link.href = dataUrl;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleShareKural = async () => {
+    try {
+      const canvas = await generateKuralCanvas();
+      canvas.toBlob(async (blob) => {
+        if (!blob) {
+          alert('Could not generate sharing image.');
+          return;
+        }
+        const fileName = `${t('kural.no').replace(/\s+/g, '_')}_Thirukkural.png`;
+        const file = new File([blob], fileName, { type: 'image/png' });
+        
+        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+          try {
+            await navigator.share({
+              files: [file],
+              title: t('kural.title'),
+              text: `${t('kural.no')} - ${t('kural.textLine1')} / ${t('kural.textLine2')}`,
+            });
+          } catch (shareError) {
+            if (shareError.name !== 'AbortError') {
+              console.error('Share failed:', shareError);
+            }
+          }
+        } else {
+          // Fallback to download
+          const dataUrl = canvas.toDataURL('image/png');
+          const link = document.createElement('a');
+          link.download = fileName;
+          link.href = dataUrl;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          alert(language === 'en' 
+            ? 'Web sharing is not supported on this browser. The image has been downloaded instead!' 
+            : 'இந்த உலாவியில் பகிர்வு வசதி இல்லை. எனவே படம் பதிவிறக்கம் செய்யப்பட்டுள்ளது!'
+          );
+        }
+      }, 'image/png');
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const ctas = [
@@ -351,6 +563,23 @@ const Home = () => {
                     </p>
                   </div>
                 </div>
+
+                <div className="flex gap-4 mt-8 max-w-sm">
+                  <button
+                    onClick={handleDownloadKural}
+                    className="flex-1 py-3 bg-[#005600] hover:bg-[#004d00] text-white text-[11px] font-bold uppercase tracking-widest transition-all duration-300 rounded-[2px] shadow-lg shadow-[#005600]/20 flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <Download size={14} />
+                    {language === 'en' ? 'Download' : 'பதிவிறக்கு'}
+                  </button>
+                  <button
+                    onClick={handleShareKural}
+                    className="flex-1 py-3 bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 text-gray-800 dark:text-white text-[11px] font-bold uppercase tracking-widest transition-all duration-300 rounded-[2px] shadow-lg flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <Share2 size={14} />
+                    {language === 'en' ? 'Share' : 'பகிர்'}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -372,7 +601,7 @@ const Home = () => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative w-full max-w-2xl bg-white dark:bg-[#0a0a0a] rounded-[2px] shadow-2xl overflow-hidden border border-white/10"
+              className="relative w-full max-w-4xl bg-white dark:bg-[#0a0a0a] rounded-[2px] shadow-2xl overflow-hidden border border-white/10"
             >
               <PixelCard variant="green" className="h-full w-full">
                 <button 
@@ -383,8 +612,8 @@ const Home = () => {
                 </button>
 
                 <div className="flex flex-col md:flex-row relative z-20">
-                  <div className="w-full md:w-2/5 h-64 md:h-auto bg-gray-50 dark:bg-white/5 p-4 md:p-0">
-                    <img src="/thiruvalluvar.png" alt="Thiruvalluvar" className="w-full h-full object-contain rounded-[12px] md:rounded-none" />
+                  <div className="w-full md:w-1/2 h-64 md:h-auto md:aspect-square bg-black p-0">
+                    <img src="/thiruvalluvar.png" alt="Thiruvalluvar" className="w-full h-full object-cover rounded-[12px] md:rounded-none" />
                   </div>
                   
                   <div className="flex-1 p-8 md:p-10 flex flex-col justify-center">
@@ -406,12 +635,22 @@ const Home = () => {
                       </p>
                     </div>
 
-                    <button
-                      onClick={closeKuralPopup}
-                      className="w-full py-3 bg-[#005600] hover:bg-[#004d00] text-white text-[11px] font-bold uppercase tracking-widest transition-all duration-300 rounded-[2px] shadow-lg shadow-[#005600]/20"
-                    >
-                      {t('kural.close')}
-                    </button>
+                    <div className="flex gap-4">
+                      <button
+                        onClick={handleDownloadKural}
+                        className="flex-1 py-3 bg-[#005600] hover:bg-[#004d00] text-white text-[11px] font-bold uppercase tracking-widest transition-all duration-300 rounded-[2px] shadow-lg shadow-[#005600]/20 flex items-center justify-center gap-2 cursor-pointer"
+                      >
+                        <Download size={14} />
+                        {language === 'en' ? 'Download' : 'பதிவிறக்கு'}
+                      </button>
+                      <button
+                        onClick={handleShareKural}
+                        className="flex-1 py-3 bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 text-gray-800 dark:text-white text-[11px] font-bold uppercase tracking-widest transition-all duration-300 rounded-[2px] shadow-lg flex items-center justify-center gap-2 cursor-pointer"
+                      >
+                        <Share2 size={14} />
+                        {language === 'en' ? 'Share' : 'பகிர்'}
+                      </button>
+                    </div>
                   </div>
                 </div>
               </PixelCard>
