@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  ArrowRight, Play, Pause, ChevronLeft, ChevronRight, Search, 
-  Globe, Shield, FileText, Building2, MapPin, HelpCircle, 
-  X, Quote, FileBadge, GraduationCap, Tractor, Users, 
+import {
+  ArrowRight, Play, Pause, ChevronLeft, ChevronRight, Search,
+  Globe, Shield, FileText, Building2, MapPin, HelpCircle,
+  X, Quote, FileBadge, GraduationCap, Tractor, Users,
   Landmark, Bell, Megaphone, Calendar, Download, Share2
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -88,10 +88,10 @@ const Home = () => {
       const valluvarSize = 340;
       const valluvarX = (800 - valluvarSize) / 2;
       const valluvarY = 195;
-      
+
       // Draw image
       ctx.drawImage(valluvarImg, valluvarX, valluvarY, valluvarSize, valluvarSize);
-      
+
       // Draw gold border around portrait
       ctx.strokeStyle = '#d4af37';
       ctx.lineWidth = 3;
@@ -124,7 +124,7 @@ const Home = () => {
         const words = text.split(' ');
         let line = '';
         let currentY = y;
-        
+
         for (let n = 0; n < words.length; n++) {
           const testLine = line + words[n] + ' ';
           const metrics = ctx.measureText(testLine);
@@ -145,14 +145,14 @@ const Home = () => {
       ctx.fillStyle = '#d4af37';
       ctx.font = 'bold 16px "Anek Tamil", sans-serif';
       ctx.fillText('அதிகார விளக்கம் / Tamil Meaning', 400, 780);
-      
+
       const nextY = wrapText(
-        `"${t('kural.meaningTa')}"`, 
-        400, 
-        815, 
-        640, 
-        30, 
-        'italic 20px "Anek Tamil", sans-serif', 
+        `"${t('kural.meaningTa')}"`,
+        400,
+        815,
+        640,
+        30,
+        'italic 20px "Anek Tamil", sans-serif',
         '#e0e0e0'
       );
 
@@ -162,12 +162,12 @@ const Home = () => {
       ctx.fillText('English Translation & Meaning', 400, nextY + 25);
 
       wrapText(
-        `"${t('kural.meaningEn')}"`, 
-        400, 
-        nextY + 60, 
-        640, 
-        28, 
-        'italic 18px "Space Grotesk", sans-serif', 
+        `"${t('kural.meaningEn')}"`,
+        400,
+        nextY + 60,
+        640,
+        28,
+        'italic 18px "Space Grotesk", sans-serif',
         '#e0e0e0'
       );
 
@@ -209,7 +209,7 @@ const Home = () => {
         }
         const fileName = `${t('kural.no').replace(/\s+/g, '_')}_Thirukkural.png`;
         const file = new File([blob], fileName, { type: 'image/png' });
-        
+
         if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
           try {
             await navigator.share({
@@ -231,8 +231,8 @@ const Home = () => {
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
-          alert(language === 'en' 
-            ? 'Web sharing is not supported on this browser. The image has been downloaded instead!' 
+          alert(language === 'en'
+            ? 'Web sharing is not supported on this browser. The image has been downloaded instead!'
             : 'இந்த உலாவியில் பகிர்வு வசதி இல்லை. எனவே படம் பதிவிறக்கம் செய்யப்பட்டுள்ளது!'
           );
         }
@@ -381,9 +381,8 @@ const Home = () => {
                 <button
                   key={idx}
                   onClick={() => setCurrentImage(idx)}
-                  className={`transition-all duration-500 ease-out ${
-                    idx === currentImage ? 'w-6 h-1.5 bg-white' : 'w-1.5 h-1.5 bg-white/40 hover:bg-white/70'
-                  }`}
+                  className={`transition-all duration-500 ease-out ${idx === currentImage ? 'w-6 h-1.5 bg-white' : 'w-1.5 h-1.5 bg-white/40 hover:bg-white/70'
+                    }`}
                   aria-label={`Go to slide ${idx + 1}`}
                 />
               ))}
@@ -537,18 +536,18 @@ const Home = () => {
               <div className="w-full max-w-[240px] aspect-square shrink-0 rounded-[12px] overflow-hidden border border-gray-100 dark:border-white/10 bg-gray-50 dark:bg-white/5 relative z-20">
                 <img src="/thiruvalluvar.png" alt="Thiruvalluvar" className="w-full h-full object-contain" />
               </div>
-              
+
               <div className="flex-1 relative z-20">
                 <div className="flex items-center gap-2 mb-6">
                   <Quote size={24} className="text-[#005600] dark:text-green-400 rotate-180" />
                   <span className="text-sm font-bold uppercase tracking-widest text-gray-400">{t('kural.title')}</span>
                 </div>
-                
+
                 <h2 className="text-[clamp(1.1rem,4.5vw,2.5rem)] font-black text-gray-900 dark:text-white mb-6 leading-tight font-anek-tamil">
                   <div className="mb-2 whitespace-nowrap">{t('kural.textLine1')}</div>
                   <div className="whitespace-nowrap">{t('kural.textLine2')}</div>
                 </h2>
-                
+
                 <div className="space-y-6">
                   <div>
                     <h4 className="text-[10px] font-bold uppercase tracking-wider text-[#005600] dark:text-green-400 mb-2">Tamil Meaning</h4>
@@ -562,23 +561,6 @@ const Home = () => {
                       "{t('kural.meaningEn')}"
                     </p>
                   </div>
-                </div>
-
-                <div className="flex gap-4 mt-8 max-w-sm">
-                  <button
-                    onClick={handleDownloadKural}
-                    className="flex-1 py-3 bg-[#005600] hover:bg-[#004d00] text-white text-[11px] font-bold uppercase tracking-widest transition-all duration-300 rounded-[2px] shadow-lg shadow-[#005600]/20 flex items-center justify-center gap-2 cursor-pointer"
-                  >
-                    <Download size={14} />
-                    {language === 'en' ? 'Download' : 'பதிவிறக்கு'}
-                  </button>
-                  <button
-                    onClick={handleShareKural}
-                    className="flex-1 py-3 bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 text-gray-800 dark:text-white text-[11px] font-bold uppercase tracking-widest transition-all duration-300 rounded-[2px] shadow-lg flex items-center justify-center gap-2 cursor-pointer"
-                  >
-                    <Share2 size={14} />
-                    {language === 'en' ? 'Share' : 'பகிர்'}
-                  </button>
                 </div>
               </div>
             </div>
@@ -604,7 +586,7 @@ const Home = () => {
               className="relative w-full max-w-4xl bg-white dark:bg-[#0a0a0a] rounded-[2px] shadow-2xl overflow-hidden border border-white/10"
             >
               <PixelCard variant="green" className="h-full w-full">
-                <button 
+                <button
                   onClick={closeKuralPopup}
                   className="absolute top-4 right-4 z-30 w-8 h-8 flex items-center justify-center rounded-full bg-black/5 dark:bg-white/5 text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors"
                 >
@@ -615,12 +597,12 @@ const Home = () => {
                   <div className="w-full md:w-1/2 h-64 md:h-auto md:aspect-square bg-black p-0">
                     <img src="/thiruvalluvar.png" alt="Thiruvalluvar" className="w-full h-full object-cover rounded-[12px] md:rounded-none" />
                   </div>
-                  
+
                   <div className="flex-1 p-8 md:p-10 flex flex-col justify-center">
                     <div className="text-[#005600] dark:text-green-400 text-xs font-bold uppercase tracking-[0.2em] mb-4">
                       {t('kural.no')}
                     </div>
-                    
+
                     <h3 className="text-[clamp(1rem,4.2vw,2rem)] font-black text-gray-900 dark:text-white mb-6 leading-tight font-anek-tamil">
                       <div className="mb-2 whitespace-nowrap">{t('kural.textLine1')}</div>
                       <div className="whitespace-nowrap">{t('kural.textLine2')}</div>
@@ -645,7 +627,7 @@ const Home = () => {
                       </button>
                       <button
                         onClick={handleShareKural}
-                        className="flex-1 py-3 bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 text-gray-800 dark:text-white text-[11px] font-bold uppercase tracking-widest transition-all duration-300 rounded-[2px] shadow-lg flex items-center justify-center gap-2 cursor-pointer"
+                        className="flex-1 py-3 bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 text-gray-800 dark:text-white text-[11px] font-bold uppercase tracking-widest transition-all duration-300 rounded-[2px] flex items-center justify-center gap-2 cursor-pointer"
                       >
                         <Share2 size={14} />
                         {language === 'en' ? 'Share' : 'பகிர்'}
