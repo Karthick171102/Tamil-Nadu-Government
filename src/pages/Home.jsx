@@ -574,7 +574,7 @@ const Home = () => {
 
       <section className="py-20 relative overflow-hidden">
         <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-5xl mx-auto overflow-hidden">
+          <div className="mx-auto">
             <div className="p-0 md:p-12 flex flex-col md:flex-row items-center gap-8 md:gap-12">
               <div className="w-full max-w-[240px] aspect-square shrink-0 rounded-[12px] overflow-hidden border border-gray-100 dark:border-white/10 bg-gray-50 dark:bg-white/5 relative z-20">
                 <img src="/thiruvalluvar.png" alt="Thiruvalluvar" className="w-full h-full object-contain" />

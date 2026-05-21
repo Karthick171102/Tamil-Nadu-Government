@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Search, ArrowRight, X, FileText, BookOpen, ScrollText, Mail, Megaphone, Scale
+  Search, ArrowRight, X, FileText, BookOpen, ScrollText, Mail, Megaphone, Scale,
+  TrendingUp, Award
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import PixelCard from '../components/PixelCard';
@@ -12,7 +13,9 @@ const DocumentsHub = () => {
 
   const categories = [
     { label: t('doc.gos'), icon: FileText, desc: t('doc.gosDesc'), color: '#005600' },
-    { label: t('doc.policy'), icon: BookOpen, desc: t('doc.policyDesc'), color: '#005600' },
+    { label: t('doc.policyNotes'), icon: BookOpen, desc: t('doc.policyNotesDesc'), color: '#005600' },
+    { label: t('doc.performanceBudget'), icon: TrendingUp, desc: t('doc.performanceBudgetDesc'), color: '#005600' },
+    { label: t('doc.citizenCharter'), icon: Award, desc: t('doc.citizenCharterDesc'), color: '#005600' },
     { label: t('doc.rules'), icon: ScrollText, desc: t('doc.rulesDesc'), color: '#005600' },
     { label: t('doc.circulars'), icon: Mail, desc: t('doc.circularsDesc'), color: '#005600' },
     { label: t('doc.announcements'), icon: Megaphone, desc: t('doc.announcementsDesc'), color: '#005600' },

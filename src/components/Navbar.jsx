@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ChevronDown, Search, ArrowRight, FileBadge, FileText, Car, HeartPulse, GraduationCap, Tractor, Building2, Users, Wallet, Baby, Home as HomeIcon, Briefcase, Globe, MapPin, HelpCircle, Volume2, VolumeX } from 'lucide-react';
+import { Menu, X, ChevronDown, Search, ArrowRight, FileBadge, FileText, Car, HeartPulse, GraduationCap, Tractor, Building2, Users, Wallet, Baby, Home as HomeIcon, Briefcase, Globe, MapPin, HelpCircle, Volume2, VolumeX, MessageSquare } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
 import './Navbar.css';
@@ -50,19 +50,17 @@ const submenus = {
       [
         { label: 'Online Services',    path: '/services/online' },
         { label: 'Contact Directory',  path: '/services' },
-        { label: 'Job Opportunity',    path: '/services' },
-        { label: 'Important Websites', path: '/services' },
-      ],
-      [
-        { label: 'Census',             path: '/services' },
-        { label: 'Statistics',         path: '/services' },
         { label: 'Employment Details', path: '/services' },
-        { label: 'Grievances',         path: '/services/grievances' },
       ],
       [
+        { label: 'Grievances',         path: '/services/grievances' },
         { label: 'Forms',              path: '/services' },
+        { label: 'Statistics',         path: '/services' },
+      ],
+      [
         { label: 'RTI Contacts',       path: '/services' },
         { label: 'Mobile App Directory', path: '/services' },
+        { label: 'Important Websites', path: '/services' },
       ],
     ],
   },
@@ -92,9 +90,11 @@ const submenus = {
     columns: [
       [
         { label: 'G.Os', path: '/documents' },
-        { label: 'Policy Notes / Performance Budget / Citizen Charter', path: '/documents' },
+        { label: 'Policy Notes', path: '/documents' },
+        { label: 'Performance Budget', path: '/documents' },
       ],
       [
+        { label: 'Citizen Charter', path: '/documents' },
         { label: 'Rules & Regulations', path: '/documents' },
         { label: 'Circulars & Notifications', path: '/documents' },
       ],
@@ -208,6 +208,9 @@ const Navbar = ({ hide, isAtTop = true }) => {
 
       'G.Os': 'doc.gos',
       'Policy Notes / Performance Budget / Citizen Charter': 'doc.policy',
+      'Policy Notes': 'doc.policyNotes',
+      'Performance Budget': 'doc.performanceBudget',
+      'Citizen Charter': 'doc.citizenCharter',
       'Rules & Regulations': 'doc.rules',
       'Circulars & Notifications': 'doc.circulars',
       'Announcements': 'doc.announcements',
@@ -222,6 +225,7 @@ const Navbar = ({ hide, isAtTop = true }) => {
     { name: t('nav.government'), path: '/government', hasSubmenu: true  },
     { name: t('nav.documents'),  path: '/documents',  hasSubmenu: true  },
     { name: t('nav.schemes'),    path: '/schemes',    hasSubmenu: true  },
+    { name: t('nav.grievances'), path: '/services/grievances', hasSubmenu: false, isUnique: true },
     { name: t('nav.news'),       path: '/news',       hasSubmenu: false },
     { name: t('nav.help'),       path: '/help',       hasSubmenu: false },
   ];
@@ -352,10 +356,12 @@ const Navbar = ({ hide, isAtTop = true }) => {
         {/* Center */}
         <nav className="hidden xl:block shrink-0">
           <ul className="flex items-center gap-1">
-            {navLinks.map((link) => {
+            {navLinks.filter(link => !link.isUnique).map((link) => {
               const isActive = link.path === '/' 
                 ? location.pathname === '/' 
-                : location.pathname.startsWith(link.path);
+                : (link.path === '/services'
+                    ? (location.pathname === '/services' || location.pathname === '/services/online')
+                    : location.pathname.startsWith(link.path));
               const hasDropdown = !!submenus[link.path];
               return (
                 <li
@@ -366,16 +372,30 @@ const Navbar = ({ hide, isAtTop = true }) => {
                 >
                   <Link
                     to={link.path}
-                    style={{ 
-                      backgroundColor: isActive ? 'var(--accent-primary)' : 'transparent',
-                      color: isActive ? '#ffffff' : '' 
-                    }}
-                    className={`flex items-center gap-1 rounded-full font-medium text-[0.9rem] transition-all duration-200 px-4 py-1.5 ${
-                      isActive
-                        ? 'shadow-md'
-                        : 'text-gray-600 hover:text-gray-900 hover:bg-black/5'
+                    style={
+                      link.isUnique
+                        ? (isActive
+                            ? { backgroundColor: '#ea580c', color: '#ffffff' }
+                            : { backgroundColor: 'rgba(249, 115, 22, 0.08)', color: '#ea580c', border: '1px solid rgba(249, 115, 22, 0.25)' }
+                          )
+                        : (isActive
+                            ? { backgroundColor: 'var(--accent-primary)', color: '#ffffff' }
+                            : {}
+                          )
+                    }
+                    className={`flex items-center gap-1.5 rounded-full font-semibold text-[0.85rem] transition-all duration-200 px-3.5 py-1.5 ${
+                      link.isUnique
+                        ? (isActive
+                            ? 'shadow-sm hover:bg-[#ea580c]/90'
+                            : 'hover:bg-orange-500/15 hover:text-[#ea580c] hover:border-[#ea580c]/50 hover:shadow-[0_4px_12px_rgba(249,115,22,0.08)]'
+                          )
+                        : (isActive
+                            ? 'shadow-md'
+                            : 'text-gray-600 hover:text-gray-900 hover:bg-black/5'
+                          )
                     }`}
                   >
+                    {link.isUnique && <MessageSquare size={13} />}
                     {link.name}
                     {hasDropdown && (
                       <ChevronDown
@@ -402,21 +422,17 @@ const Navbar = ({ hide, isAtTop = true }) => {
                         {/* Decorative Top Arrow */}
                         <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white border-t border-l border-gray-200 rotate-45" />
 
-                        <div className="flex gap-6 relative z-10">
-                          {submenus[link.path].columns.map((col, ci) => (
-                            <ul key={ci} className="flex flex-col gap-1 min-w-[200px]">
-                              {col.map((item) => (
-                                <li key={item.label}>
-                                  <Link
-                                    to={item.path}
-                                    className="group flex items-center justify-between px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-[#005600] hover:bg-[#005600]/5 rounded-[2px] transition-all duration-200 whitespace-nowrap"
-                                  >
-                                    <span>{translateMenuLabel(item.label)}</span>
-                                    <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 text-[#005600]" />
-                                  </Link>
-                                </li>
-                              ))}
-                            </ul>
+                        <div className="grid grid-cols-3 gap-x-6 gap-y-1 relative z-10 w-[720px]">
+                          {submenus[link.path].columns.flat().map((item) => (
+                            <div key={item.label} className="min-w-[200px]">
+                              <Link
+                                to={item.path}
+                                className="group flex items-center justify-between px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-[#005600] hover:bg-[#005600]/5 rounded-[2px] transition-all duration-200 whitespace-nowrap"
+                              >
+                                <span>{translateMenuLabel(item.label)}</span>
+                                <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 text-[#005600]" />
+                              </Link>
+                            </div>
                           ))}
                         </div>
                       </motion.div>
@@ -430,6 +446,30 @@ const Navbar = ({ hide, isAtTop = true }) => {
 
         {/* Right */}
         <div className="flex-1 flex justify-end items-center gap-4">
+          {/* Grievances Button (Desktop Only, next to search) */}
+          {(() => {
+            const grievanceLink = navLinks.find(l => l.isUnique);
+            if (!grievanceLink) return null;
+            const isGrievanceActive = location.pathname.startsWith(grievanceLink.path);
+            return (
+              <Link
+                to={grievanceLink.path}
+                style={
+                  isGrievanceActive
+                    ? { backgroundColor: '#ea580c', color: '#ffffff' }
+                    : { backgroundColor: 'rgba(249, 115, 22, 0.08)', color: '#ea580c', border: '1px solid rgba(249, 115, 22, 0.25)' }
+                }
+                className={`hidden xl:flex items-center gap-1.5 rounded-full font-semibold text-[0.85rem] transition-all duration-200 px-3.5 py-1.5 ${
+                  isGrievanceActive
+                    ? 'shadow-sm hover:bg-[#ea580c]/90'
+                    : 'hover:bg-orange-500/15 hover:text-[#ea580c] hover:border-[#ea580c]/50 hover:shadow-[0_4px_12px_rgba(249,115,22,0.08)]'
+                }`}
+              >
+                <MessageSquare size={13} />
+                {grievanceLink.name}
+              </Link>
+            );
+          })()}
 
           {/* Search Button */}
           <button
@@ -484,30 +524,64 @@ const Navbar = ({ hide, isAtTop = true }) => {
             </div>
 
             {/* Nav Links */}
-            <nav className="flex-1 overflow-y-auto px-4 py-4">
+            <nav className="flex-1 overflow-y-auto px-4 py-4 flex flex-col justify-between">
               <ul className="flex flex-col gap-1">
-                {navLinks.map((link) => (
-                  <li key={link.path}>
+                {navLinks.filter(link => !link.isUnique).map((link) => {
+                  const isMobileActive = location.pathname === link.path;
+                  return (
+                    <li key={link.path}>
+                      <Link
+                        to={link.path}
+                        style={
+                          isMobileActive 
+                            ? { backgroundColor: 'var(--accent-primary)', color: '#ffffff' }
+                            : {}
+                        }
+                        className={`flex items-center justify-between px-5 py-4 rounded-[2px] text-[1.05rem] font-semibold transition-all duration-200 ${
+                          isMobileActive
+                            ? 'shadow-sm'
+                            : 'text-gray-700 hover:bg-gray-50'
+                        }`}
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        <span>{link.name}</span>
+                        <ArrowRight size={16} style={{ color: isMobileActive ? '#ffffff' : '#d1d5db' }} />
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+
+              {/* Separator & Grievance Button */}
+              {(() => {
+                const grievanceLink = navLinks.find(l => l.isUnique);
+                if (!grievanceLink) return null;
+                const isMobileActive = location.pathname.startsWith(grievanceLink.path);
+                return (
+                  <div className="mt-8 pt-6 border-t border-gray-155 dark:border-white/5">
                     <Link
-                      to={link.path}
+                      to={grievanceLink.path}
                       style={
-                        location.pathname === link.path 
-                          ? { backgroundColor: 'var(--accent-primary)', color: '#ffffff' }
-                          : {}
+                        isMobileActive
+                          ? { backgroundColor: '#ea580c', color: '#ffffff' }
+                          : { backgroundColor: 'rgba(249, 115, 22, 0.08)', color: '#ea580c', borderLeft: '4px solid #ea580c' }
                       }
-                      className={`flex items-center justify-between px-5 py-4 rounded-[2px] text-[1.05rem] font-medium transition-all duration-200 ${
-                        location.pathname === link.path
+                      className={`flex items-center justify-between px-5 py-4 rounded-[2px] text-[1.05rem] font-semibold transition-all duration-200 ${
+                        isMobileActive
                           ? 'shadow-sm'
-                          : 'text-gray-700 hover:bg-gray-50'
+                          : 'hover:bg-orange-500/10'
                       }`}
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      {link.name}
-                      <ArrowRight size={16} style={{ color: location.pathname === link.path ? '#ffffff' : '#d1d5db' }} />
+                      <div className="flex items-center gap-2.5">
+                        <MessageSquare size={16} />
+                        <span>{grievanceLink.name}</span>
+                      </div>
+                      <ArrowRight size={16} style={{ color: isMobileActive ? '#ffffff' : '#ea580c' }} />
                     </Link>
-                  </li>
-                ))}
-              </ul>
+                  </div>
+                );
+              })()}
             </nav>
 
             {/* Bottom Search Bar — pinned */}
