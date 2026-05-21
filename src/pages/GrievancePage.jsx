@@ -11,23 +11,9 @@ import {
   getConstituenciesByDistrict,
   getMlaByConstituency,
   getOfficerByDistrict,
-  PARTY_COLORS,
   ASSEMBLY_METADATA,
 } from '../utils/mlaData';
 
-// ── Party Badge ──────────────────────────────────────────────────────────────
-
-function PartyBadge({ party }) {
-  const style = PARTY_COLORS[party] || { bg: '#555', text: '#fff' };
-  return (
-    <span
-      className="inline-block text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-[2px] ml-2 align-middle"
-      style={{ backgroundColor: style.bg, color: style.text }}
-    >
-      {party}
-    </span>
-  );
-}
 
 // ── Custom Animated Select ───────────────────────────────────────────────────
 
@@ -122,21 +108,18 @@ function CustomSelect({ id, label, value, onChange, options, placeholder, icon: 
 
 // ── Auto-Filled Info Card ────────────────────────────────────────────────────
 
-function InfoCard({ label, value, icon: Icon, badge }) {
+function InfoCard({ label, value }) {
   return (
-    <div>
-      <label className="block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1.5">
+    <div className="cursor-default select-none pointer-events-none">
+      <label className="block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1.5 cursor-default">
         {label}
       </label>
-      <div className="flex items-start gap-3 px-4 py-3 rounded-[2px] bg-[#005600]/5 dark:bg-[#008250]/10 border border-[#005600]/15 dark:border-[#008250]/20">
-        {Icon && <Icon size={15} className="text-[#005600] dark:text-[#008250] shrink-0 mt-0.5" />}
+      <div className="flex items-start gap-3 px-4 py-3 rounded-[2px] bg-white dark:bg-[#0d1a0d] border-2 border-[#005600]/30 dark:border-[#008250]/40">
         <div className="flex-1 min-w-0">
           <span className="text-sm font-semibold text-gray-800 dark:text-gray-200 leading-snug">
             {value || '—'}
           </span>
-          {badge && <PartyBadge party={badge} />}
         </div>
-        <Shield size={12} className="text-[#005600]/40 dark:text-[#008250]/40 shrink-0 mt-0.5" />
       </div>
     </div>
   );
@@ -288,7 +271,6 @@ const GrievancePage = () => {
                 </span>
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-semibold text-gray-800 dark:text-gray-200">{mlaRecord.mla}</span>
-                  <PartyBadge party={mlaRecord.party} />
                 </div>
               </div>
             )}
@@ -455,17 +437,14 @@ const GrievancePage = () => {
                     transition={{ duration: 0.28 }}
                     className="overflow-hidden"
                   >
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-1">
+                    <div className="flex flex-col gap-3 pb-1">
                       <InfoCard
                         label={cn ? 'Assigned MLA' : 'ஒதுக்கப்பட்ட சட்டமன்ற உறுப்பினர்'}
                         value={mlaRecord.mla}
-                        icon={Briefcase}
-                        badge={mlaRecord.party}
                       />
                       <InfoCard
                         label={cn ? 'Assigned Officer' : 'ஒதுக்கப்பட்ட அதிகாரி'}
                         value={officer}
-                        icon={User}
                       />
                     </div>
                     {/* AC Info strip */}

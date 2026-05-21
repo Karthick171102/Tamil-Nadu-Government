@@ -643,61 +643,74 @@ const Home = () => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative w-full max-w-4xl bg-white dark:bg-[#0a0a0a] rounded-[2px] shadow-2xl overflow-hidden border border-white/10"
+              className="relative w-full max-w-lg bg-white dark:bg-[#0a0a0a] rounded-[2px] shadow-2xl overflow-hidden border border-white/10 max-h-[90vh] flex flex-col"
             >
-              <PixelCard variant="green" className="h-full w-full">
+              {/* Plain container — no pixel effect */}
+              <div className="h-full w-full flex flex-col overflow-hidden bg-white dark:bg-[#0a0a0a]">
+
                 <button
                   onClick={closeKuralPopup}
-                  className="absolute top-4 right-4 z-30 w-8 h-8 flex items-center justify-center rounded-full bg-black/5 dark:bg-white/5 text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors"
+                  className="absolute top-4 right-4 z-30 w-8 h-8 flex items-center justify-center rounded-full bg-black/10 dark:bg-white/10 text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors"
                 >
                   <X size={18} />
                 </button>
 
-                <div className="flex flex-col md:flex-row relative z-20">
-                  <div className="w-full md:w-1/2 h-64 md:h-auto md:aspect-square bg-gray-50 dark:bg-[#121212] flex items-center justify-center p-4">
-                    <img src="/thiruvalluvar.png" alt="Thiruvalluvar" className="w-full h-full object-contain rounded-[12px] md:rounded-none" />
-                  </div>
-
-                  <div className="flex-1 p-8 md:p-10 flex flex-col justify-center">
-                    <div className="text-[#005600] dark:text-green-400 text-xs font-bold uppercase tracking-[0.2em] mb-4">
-                      {currentKuralNo}
-                    </div>
-
-                    <h3 className="text-xs md:text-[clamp(1.2rem,4.2vw,2rem)] font-black text-gray-900 dark:text-white mb-6 leading-tight font-anek-tamil">
-                      <div className="mb-2 whitespace-nowrap">{currentKuralLine1}</div>
-                      <div className="whitespace-nowrap">{currentKuralLine2}</div>
-                    </h3>
-
-                    <div className="space-y-4 mb-8">
-                      <p className="text-gray-500 dark:text-gray-400 text-xs leading-relaxed italic font-anek-tamil">
-                        "{currentKuralMeaningTa}"
-                      </p>
-                      <p className="text-gray-400 dark:text-gray-500 text-xs leading-relaxed italic">
-                        "{currentKuralMeaningEn}"
-                      </p>
-                    </div>
-
-                    <div className="flex gap-4">
-                      <button
-                        onClick={handleDownloadKural}
-                        className="flex-1 py-3 bg-[#005600] hover:bg-[#004d00] text-white text-[11px] font-bold uppercase tracking-widest transition-all duration-300 rounded-[2px] shadow-lg shadow-[#005600]/20 flex items-center justify-center gap-2 cursor-pointer"
-                      >
-                        <Download size={14} />
-                        {language === 'en' ? 'Download' : 'பதிவிறக்கு'}
-                      </button>
-                      <button
-                        onClick={handleShareKural}
-                        className="flex-1 py-3 bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 text-gray-800 dark:text-white text-[11px] font-bold uppercase tracking-widest transition-all duration-300 rounded-[2px] flex items-center justify-center gap-2 cursor-pointer"
-                      >
-                        <Share2 size={14} />
-                        {language === 'en' ? 'Share' : 'பகிர்'}
-                      </button>
-                    </div>
-                  </div>
+                {/* ── Thiruvalluvar photo — padded top, slightly rounded ── */}
+                <div className="w-full pt-5 px-5 bg-gradient-to-b from-gray-50 to-gray-100 dark:from-[#111] dark:to-[#0a0a0a] flex items-end justify-center shrink-0 overflow-hidden">
+                  <img
+                    src="/thiruvalluvar.png"
+                    alt="Thiruvalluvar"
+                    className="h-52 w-auto object-contain rounded-xl"
+                  />
                 </div>
-              </PixelCard>
+
+                {/* ── Content — scrollable ── */}
+                <div className="flex-1 overflow-y-auto px-7 py-6 flex flex-col gap-4">
+
+                  {/* Kural number badge */}
+                  <div className="text-[#005600] dark:text-green-400 text-[10px] font-bold uppercase tracking-[0.2em]">
+                    {currentKuralNo}
+                  </div>
+
+                  {/* Kural lines */}
+                  <h3 className="text-[1.05rem] md:text-[1.15rem] font-black text-gray-900 dark:text-white leading-snug font-anek-tamil">
+                    <div className="mb-1">{currentKuralLine1}</div>
+                    <div>{currentKuralLine2}</div>
+                  </h3>
+
+                  {/* Meanings */}
+                  <div className="space-y-3">
+                    <p className="text-gray-500 dark:text-gray-400 text-xs leading-relaxed italic font-anek-tamil">
+                      "{currentKuralMeaningTa}"
+                    </p>
+                    <p className="text-gray-400 dark:text-gray-500 text-xs leading-relaxed italic">
+                      "{currentKuralMeaningEn}"
+                    </p>
+                  </div>
+
+                  {/* Buttons */}
+                  <div className="flex gap-3 pt-2">
+                    <button
+                      onClick={handleDownloadKural}
+                      className="flex-1 py-3 bg-[#005600] hover:bg-[#004d00] text-white text-[11px] font-bold uppercase tracking-widest transition-all duration-300 rounded-[2px] shadow-lg shadow-[#005600]/20 flex items-center justify-center gap-2 cursor-pointer"
+                    >
+                      <Download size={14} />
+                      {language === 'en' ? 'Download' : 'பதிவிறக்கு'}
+                    </button>
+                    <button
+                      onClick={handleShareKural}
+                      className="flex-1 py-3 bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 text-gray-800 dark:text-white text-[11px] font-bold uppercase tracking-widest transition-all duration-300 rounded-[2px] flex items-center justify-center gap-2 cursor-pointer"
+                    >
+                      <Share2 size={14} />
+                      {language === 'en' ? 'Share' : 'பகிர்'}
+                    </button>
+                  </div>
+
+                </div>
+              </div>
             </motion.div>
           </div>
+
         )}
       </AnimatePresence>
     </div>

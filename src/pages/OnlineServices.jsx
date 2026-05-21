@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { 
-  Search, ArrowRight, X,
+  Search, ArrowRight, ArrowLeft, X,
   Building2, FileText, ExternalLink, Briefcase, GraduationCap, Gavel, Bus, Map, HelpCircle, FileCheck, Landmark, ShieldCheck, CreditCard, LayoutDashboard, Users
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
@@ -9,6 +10,7 @@ import PixelCard from '../components/PixelCard';
 
 const OnlineServices = () => {
   const { t, language } = useLanguage();
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState('Department');
 
@@ -242,6 +244,14 @@ const OnlineServices = () => {
           {/* Heading and Tabs Group */}
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8  dark:border-white/10">
             <div className="pb-4">
+              {/* Back to Services breadcrumb */}
+              <button
+                onClick={() => navigate('/services')}
+                className="flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-[#005600] dark:hover:text-[#008250] uppercase tracking-wider mb-5 transition-colors group"
+              >
+                <ArrowLeft size={14} className="group-hover:-translate-x-0.5 transition-transform duration-150" />
+                {language === 'en' ? 'Back to Services' : 'சேவைகளுக்கு திரும்பு'}
+              </button>
               <motion.h1 variants={fadeInUp} className="text-2xl font-bold tracking-tight mb-2">
                 {t('onlineServices.title')}
               </motion.h1>
