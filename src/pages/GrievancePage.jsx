@@ -15,6 +15,7 @@ import {
   ASSEMBLY_METADATA,
 } from '../utils/mlaData';
 import { supabase, isSupabaseConfigured } from '../utils/supabaseClient';
+import emailjs from '@emailjs/browser';
 
 
 // ── Custom Animated Select ───────────────────────────────────────────────────
@@ -154,6 +155,7 @@ const GrievancePage = () => {
   const [form, setForm] = useState({ fullName: '', phone: '', email: '', district: '', constituency: '', issue: '', attachments: [] });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [emailStatus, setEmailStatus] = useState('idle'); // 'idle', 'sending', 'sent', 'failed', 'simulated'
   const [isSearching, setIsSearching] = useState(false);
   const [constituencies, setConstituencies] = useState([]);
   const [mlaRecord, setMlaRecord] = useState(null);
@@ -329,6 +331,51 @@ const GrievancePage = () => {
     return data?.publicUrl || null;
   };
 
+  const sendEmailTicket = async (grievance) => {
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    const isPlaceholder = (val) => !val || val.includes('your_') || val.includes('your-') || val.includes('placeholder');
+    if (isPlaceholder(serviceId) || isPlaceholder(templateId) || isPlaceholder(publicKey)) {
+      console.warn('EmailJS keys are missing or placeholders. Running in Simulated Mode.');
+      setEmailStatus('simulated');
+      return;
+    }
+
+    setEmailStatus('sending');
+    try {
+      const host = window.location.origin;
+      const logoUrl = host.includes('localhost') || host.includes('127.0.0.1')
+        ? 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Seal_of_Tamil_Nadu.svg/200px-Seal_of_Tamil_Nadu.svg.png'
+        : `${host}${cn ? '/tn-logo-en.svg' : '/tn-logo.svg'}`;
+
+      await emailjs.send(
+        serviceId,
+        templateId,
+        {
+          ref_id: grievance.id,
+          full_name: grievance.fullName,
+          phone: grievance.phone,
+          email: grievance.email,
+          district: grievance.district,
+          constituency: grievance.constituency,
+          issue: grievance.issue,
+          mla: grievance.mla,
+          officer: grievance.officer,
+          date: grievance.date,
+          to_email: grievance.email,
+          logo_url: logoUrl,
+        },
+        publicKey
+      );
+      setEmailStatus('sent');
+    } catch (error) {
+      console.error('Failed to send email via EmailJS:', error);
+      setEmailStatus('failed');
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isSubmitting) return;
@@ -396,6 +443,7 @@ const GrievancePage = () => {
     setSubmittedGrievance(localGrievance);
     setIsSubmitting(false);
     setView('success');
+    sendEmailTicket(newGrievance);
   };
 
   const handleFileChange = (e) => {
@@ -451,6 +499,7 @@ const GrievancePage = () => {
     setSearchId('');
     setSearchError('');
     setSubmittedGrievance(null);
+    setEmailStatus('idle');
     setView('landing');
   };
 
@@ -1000,7 +1049,7 @@ const GrievancePage = () => {
   if (view === 'success' && submittedGrievance) {
     return (
       <>
-        <div className="min-h-[70vh] flex items-center justify-center px-6 py-16">
+        <div className="min-h-[80vh] flex flex-col items-center justify-start pt-28 pb-16 px-6">
           <motion.div
             initial={{ opacity: 0, scale: 0.92, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -1036,6 +1085,63 @@ const GrievancePage = () => {
                   : 'உங்கள் புகார் பதிவு செய்யப்பட்டு நியமிக்கப்பட்ட அதிகாரிகளால் ஆய்வு செய்யப்படும்.'}
               </motion.p>
             </div>
+
+            {/* Email dispatch status */}
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.46 }}
+              className="mb-6"
+            >
+              {emailStatus === 'sending' && (
+                <div className="flex items-center gap-3 px-4 py-3 bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 text-gray-600 dark:text-gray-400 text-xs rounded-[2px] animate-pulse">
+                  <Clock size={16} className="text-[#ea580c] animate-spin shrink-0" />
+                  <span>
+                    {cn 
+                      ? `Sending email ticket to ${submittedGrievance.email}...` 
+                      : `மின்னஞ்சல் முகவரிக்கு (${submittedGrievance.email}) உறுதிப்படுத்தல் சீட்டு அனுப்பப்படுகிறது...`}
+                  </span>
+                </div>
+              )}
+
+              {emailStatus === 'sent' && (
+                <div className="flex items-center gap-3 px-4 py-3 bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs rounded-[2px]">
+                  <Check size={16} className="text-emerald-500 shrink-0" />
+                  <span>
+                    {cn 
+                      ? `Confirmation ticket sent to ${submittedGrievance.email}!` 
+                      : `உறுதிப்படுத்தல் சீட்டு ${submittedGrievance.email} முகவரிக்கு அனுப்பப்பட்டது!`}
+                  </span>
+                </div>
+              )}
+
+              {emailStatus === 'failed' && (
+                <div className="flex items-center gap-3 px-4 py-3 bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-xs rounded-[2px]">
+                  <AlertCircle size={16} className="text-red-500 shrink-0" />
+                  <span>
+                    {cn 
+                      ? `Failed to send email to ${submittedGrievance.email}. Please save your Reference ID.` 
+                      : `மின்னஞ்சல் அனுப்புவதில் தோல்வி (${submittedGrievance.email}). குறிப்பு எண்ணைச் சேமிக்கவும்.`}
+                  </span>
+                </div>
+              )}
+
+              {emailStatus === 'simulated' && (
+                <div className="flex flex-col gap-1.5 px-4 py-3 bg-[#ea580c]/5 border border-[#ea580c]/20 text-[#ea580c] text-xs rounded-[2px]">
+                  <div className="flex items-center gap-2">
+                    <Mail size={16} className="text-[#ea580c] shrink-0" />
+                    <span className="font-semibold">
+                      {cn ? 'Ticket Email Simulated' : 'மின்னஞ்சல் சீட்டு உருவகப்படுத்தப்பட்டது'}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-gray-500 dark:text-gray-400 leading-normal">
+                    {cn 
+                      ? `A ticket email was simulated for ${submittedGrievance.email}. Configure VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, and VITE_EMAILJS_PUBLIC_KEY in .env.local for live delivery.` 
+                      : `${submittedGrievance.email} முகவரிக்கான மின்னஞ்சல் சீட்டு வெற்றிகரமாகத் தற்காலிகமாகப் பதிவு செய்யப்பட்டது. நேரடி மின்னஞ்சல் விநியோகத்திற்கு .env.local-இல் VITE_EMAILJS_* மாறிகளை உள்ளமைக்கவும்.`}
+                  </p>
+                </div>
+              )}
+            </motion.div>
 
             {/* Summary Card */}
             <motion.div
