@@ -71,15 +71,7 @@ const Footer = () => {
         />
       </div>
 
-      {/* Subtle background glow accents */}
-      <div 
-        className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl via-transparent to-transparent pointer-events-none rounded-bl-full z-[1]" 
-        style={{ backgroundImage: `linear-gradient(to top left, ${footerGlow1}, transparent)` }}
-      />
-      <div 
-        className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br via-transparent to-transparent pointer-events-none rounded-br-full z-[1]" 
-        style={{ backgroundImage: `linear-gradient(to bottom right, ${footerGlow2}, transparent)` }}
-      />
+     
 
       <div className="container mx-auto px-6 relative z-10">
         {/* Main Footer Grid */}
