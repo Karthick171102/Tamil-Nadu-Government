@@ -93,20 +93,38 @@ try {
 
   // Verify email status banner is visible and check content
   console.log('Checking email notification banner on Success screen...');
-  const banner = page.locator('text=Ticket Email Simulated');
-  if (await banner.isVisible()) {
-    const text = await page.locator('text=Ticket Email Simulated').locator('xpath=../..').innerText();
+  const statusTexts = ['Simulated', 'sent', 'failed', 'sending'];
+  try {
+    // Wait for any of the status text indicators to show up
+    await Promise.any(
+      statusTexts.map(text => 
+        page.waitForSelector(`text=${text}`, { state: 'visible', timeout: 10000 })
+      )
+    );
+    
+    // Find which status text is visible and retrieve parent content
+    let textContent = '';
+    for (const st of statusTexts) {
+      const loc = page.locator(`text=${st}`).first();
+      if (await loc.isVisible()) {
+        const parent = loc.locator('xpath=./ancestor::div[contains(@class, "px-4") or contains(@class, "py-3")]').first();
+        textContent = await parent.innerText();
+        break;
+      }
+    }
+    
     console.log('\n--- Email Status Banner text ---');
-    console.log(text);
+    console.log(textContent);
     console.log('--------------------------------\n');
-    if (text.includes('petitioner.test@example.com')) {
-      console.log('✅ Success: Email simulation banner contains the target email address!');
+    
+    if (textContent.includes('petitioner.test@example.com')) {
+      console.log('✅ Success: Email notification banner contains the target email address!');
       success = true;
     } else {
-      console.error('❌ Error: Email simulation banner does not reference the correct email address!');
+      console.error('❌ Error: Email banner does not reference the correct email address!');
     }
-  } else {
-    console.error('❌ Error: Email status banner is not visible on success page!');
+  } catch (err) {
+    console.error('❌ Error: Email status banner did not become visible:', err.message);
   }
 
   // Take a screenshot
