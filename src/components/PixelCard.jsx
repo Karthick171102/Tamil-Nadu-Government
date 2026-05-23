@@ -125,6 +125,13 @@ const VARIANTS = {
     speed: 35,
     colors: '#e8f5e9,#c8e6c9,#a5d6a7,#81c784,#4caf50,#005600',
     noFocus: false
+  },
+  orange: {
+    activeColor: '#fed7aa',
+    gap: 4,
+    speed: 35,
+    colors: '#ea580c,#f97316,#d35400,#e67e22,#f39c12,#b33939,#ff6b6b',
+    noFocus: false
   }
 };
 

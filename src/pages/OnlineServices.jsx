@@ -16,11 +16,6 @@ const OnlineServices = () => {
 
   const departments = [
     { 
-      label: t('dept.adiDravida'),
-      key: 'adiDravida',
-      color: '#005600'
-    },
-    { 
       label: t('dept.commercialTaxes'),
       key: 'commercialTaxes',
       color: '#005600'
@@ -207,10 +202,10 @@ const OnlineServices = () => {
   ];
 
   const currentDisplayData = activeFilter === 'Service' 
-    ? serviceWiseItems.map(item => ({ label: t(`svc.${item.key}`), key: item.key, icon: item.icon, type: 'service' }))
+    ? serviceWiseItems.map(item => ({ label: t(`svc.${item.key}`), key: item.key, icon: item.icon, type: 'service', description: t(`svc.${item.key}.desc`) }))
     : activeFilter === 'Category'
-    ? categoryItems.map(item => ({ label: t(`onlineServices.cat.${item.key}`), key: item.key, icon: item.icon, type: 'category' }))
-    : departments.map(dept => ({ ...dept, type: 'department', icon: Building2 }));
+    ? categoryItems.map(item => ({ label: t(`onlineServices.cat.${item.key}`), key: item.key, icon: item.icon, type: 'category', description: t(`onlineServices.cat.${item.key}.desc`) }))
+    : departments.map(dept => ({ ...dept, type: 'department', icon: Building2, description: t(`dept.${dept.key}.desc`) }));
 
   const filtered = searchQuery.trim()
     ? currentDisplayData.filter(item =>
@@ -321,28 +316,27 @@ const OnlineServices = () => {
         >
           {filtered.length > 0 ? (
             filtered.map((item, index) => (
-              <motion.div key={index} variants={fadeInUp} className={item.type === 'service' ? 'h-[160px]' : 'h-[180px]'}>
+              <motion.div key={index} variants={fadeInUp} className="min-h-[190px] flex flex-col">
                 <PixelCard
                   variant="green"
                   className="group relative overflow-hidden h-full rounded-[2px] border border-black/8 dark:border-white/10 cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] hover:border-[#005600]/20 dark:hover:border-green-400/30 transition-all duration-300 bg-white dark:bg-[#0a0a0a]"
                 >
                   <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-[#005600]/5 dark:from-green-400/5 via-transparent to-transparent pointer-events-none z-1 rounded-tr-[2px]" />
 
-                  <div className="absolute inset-0 p-6 flex flex-col justify-start z-10">
+                  <div className="relative flex-1 p-6 flex flex-col justify-start z-10">
                     <div className="w-9 h-9 mb-4 rounded-[2px] bg-[#005600]/8 dark:bg-green-400/10 text-[#005600] dark:text-green-400 flex items-center justify-center border border-[#005600]/10 z-20 group-hover:bg-[#005600] dark:group-hover:bg-green-400 group-hover:text-white dark:group-hover:text-black transition-all duration-300 shrink-0">
                       <item.icon size={18} />
                     </div>
 
-                    <h3 className={`font-bold text-gray-900 dark:text-gray-100 tracking-tight group-hover:text-[#005600] dark:group-hover:text-green-400 transition-colors line-clamp-3 ${item.type === 'service' ? 'text-[13px] leading-relaxed' : 'text-sm'}`}>
+                    <h3 className={`font-bold text-gray-900 dark:text-gray-100 tracking-tight group-hover:text-[#005600] dark:group-hover:text-green-400 transition-colors line-clamp-2 ${item.type === 'service' ? 'text-[13px] leading-relaxed' : 'text-sm'}`}>
                       {item.label}
                     </h3>
 
-                    <div className="relative mt-auto min-h-[24px] overflow-hidden">
-                      <div className="absolute inset-0 flex items-center gap-2 text-[#005600] dark:text-green-400 opacity-0 translate-y-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
-                        <span className="text-[10px] font-bold uppercase tracking-widest">{item.type === 'service' ? 'Open Service' : 'Explore'}</span>
-                        <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
-                      </div>
-                    </div>
+                    {item.description && (
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1.5 line-clamp-2 leading-relaxed">
+                        {item.description}
+                      </p>
+                    )}
                   </div>
                 </PixelCard>
               </motion.div>

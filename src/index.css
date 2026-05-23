@@ -192,6 +192,45 @@ button {
   box-shadow: 0 8px 24px var(--accent-glow);
 }
 
+.btn-primary-orange {
+  background: linear-gradient(135deg, #ea580c 0%, #f97316 100%);
+  color: white;
+  padding: 12px 28px;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  font-size: 1rem;
+  transition: var(--transition-normal);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn-primary-orange::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  z-index: -1;
+  transition: opacity var(--transition-normal);
+  opacity: 0;
+}
+
+.btn-primary-orange:hover::before {
+  opacity: 1;
+}
+
+.btn-primary-orange:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(234, 88, 12, 0.35);
+}
+
 .btn-secondary {
   background: transparent;
   color: var(--text-primary);

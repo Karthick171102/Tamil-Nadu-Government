@@ -16,6 +16,7 @@ import PlaceholderPage from './pages/PlaceholderPage';
 import NewsPage from './pages/NewsPage';
 import HelpPage from './pages/HelpPage';
 import GrievancePage from './pages/GrievancePage';
+import ImportantWebsites from './pages/ImportantWebsites';
 import { useLanguage } from './context/LanguageContext';
 
 const PageWrapper = ({ children }) => {
@@ -123,6 +124,7 @@ function App() {
                 <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
                 <Route path="/services" element={<PageWrapper><ServicesHub /></PageWrapper>} />
                 <Route path="/services/online" element={<PageWrapper><OnlineServices /></PageWrapper>} />
+                <Route path="/services/websites" element={<PageWrapper><ImportantWebsites /></PageWrapper>} />
                 <Route path="/services/grievances" element={<PageWrapper><GrievancePage /></PageWrapper>} />
                 <Route path="/departments" element={<PageWrapper><DepartmentsHub /></PageWrapper>} />
                 <Route path="/government" element={<PageWrapper><GovernmentHub /></PageWrapper>} />

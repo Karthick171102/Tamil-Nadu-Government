@@ -17,7 +17,7 @@ const ServicesHub = () => {
     { label: t('services.cat.onlineServices'), icon: Globe, desc: t('services.cat.onlineServicesDesc'), image: 'https://images.unsplash.com/photo-1588702547884-909355b9439d?auto=format&fit=crop&w=600&q=80', color: '#005600', path: '/services/online' },
     { label: t('services.cat.contactDirectory'), icon: Phone, desc: t('services.cat.contactDirectoryDesc'), image: 'https://images.unsplash.com/photo-1562577309-4932fdd64cd1?auto=format&fit=crop&w=600&q=80', color: '#005600', path: '#' },
     { label: t('services.cat.jobOpportunity'), icon: Briefcase, desc: t('services.cat.jobOpportunityDesc'), image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=80', color: '#005600', path: '#' },
-    { label: t('services.cat.importantWebsites'), icon: ExternalLink, desc: t('services.cat.importantWebsitesDesc'), image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80', color: '#005600', path: '#' },
+    { label: t('services.cat.importantWebsites'), icon: ExternalLink, desc: t('services.cat.importantWebsitesDesc'), image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80', color: '#005600', path: '/services/websites' },
     { label: t('services.cat.census'), icon: Users, desc: t('services.cat.censusDesc'), image: 'https://images.unsplash.com/photo-1508962914676-134849a727f0?auto=format&fit=crop&w=600&q=80', color: '#005600', path: '#' },
     { label: t('services.cat.statistics'), icon: BarChart3, desc: t('services.cat.statisticsDesc'), image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80', color: '#005600', path: '#' },
     { label: t('services.cat.employmentDetails'), icon: ClipboardList, desc: t('services.cat.employmentDetailsDesc'), image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80', color: '#005600', path: '#' },
@@ -90,7 +90,7 @@ const ServicesHub = () => {
         >
           {filtered.length > 0 ? (
             filtered.map((cat, index) => (
-              <motion.div key={index} variants={fadeInUp} className="h-[200px]">
+              <motion.div key={index} variants={fadeInUp} className="min-h-[200px] flex flex-col">
                 <PixelCard
                   variant="green"
                   onClick={() => cat.path !== '#' && navigate(cat.path)}
@@ -100,7 +100,7 @@ const ServicesHub = () => {
                   <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#005600]/8 via-transparent to-transparent pointer-events-none z-1 rounded-tr-[2px]" />
 
                   {/* Absolute Card Content Overlay */}
-                  <div className="absolute inset-0 p-6 flex flex-col justify-start z-10">
+                  <div className="relative flex-1 p-6 flex flex-col justify-start z-10">
                     {/* Top-Left Icon Badge */}
                     <div className="w-9 h-9 mb-4 rounded-[2px] bg-[#005600]/8 text-[#005600] flex items-center justify-center border border-[#005600]/10 z-20 group-hover:bg-[#005600] group-hover:text-white transition-all duration-300 shrink-0">
                       <cat.icon size={18} />
@@ -110,24 +110,10 @@ const ServicesHub = () => {
                       {cat.label}
                     </h3>
 
-                    {/* Transition Block: Description slides out and action slides up on hover */}
-                    <div className="relative mt-2 min-h-[44px] overflow-hidden">
-                      {/* Description that fades out and slides down slightly on hover */}
-                      <div className="transition-all duration-300 group-hover:opacity-0 group-hover:translate-y-4 pointer-events-none">
-                        <p className="text-gray-500 text-xs leading-relaxed line-clamp-2">
-                          {cat.desc}
-                        </p>
-                      </div>
-
-                      {/* "Open {servicename}" action that slides up and fades in on hover */}
-                      <div className="absolute inset-0 flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-[#005600] opacity-0 translate-y-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
-                        <span className="flex items-center gap-1.5">
-                          <span>{language === 'en' ? 'Open' : 'திறக்கவும்'}</span>
-                          <span className="text-gray-900 normal-case font-semibold">{cat.label}</span>
-                        </span>
-                        <ArrowRight size={12} className="transition-transform duration-300 group-hover:translate-x-1.5" />
-                      </div>
-                    </div>
+                    {/* Card Description */}
+                    <p className="text-gray-500 dark:text-gray-400 text-xs leading-relaxed line-clamp-2 mt-2">
+                      {cat.desc}
+                    </p>
                   </div>
                 </PixelCard>
               </motion.div>

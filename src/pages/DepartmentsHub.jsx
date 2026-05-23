@@ -33,7 +33,7 @@ const DepartmentsHub = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: index * 0.1 }}
-            className="h-[280px]"
+            className="min-h-[280px] flex flex-col"
           >
             <PixelCard
               variant="green"
@@ -43,7 +43,7 @@ const DepartmentsHub = () => {
               <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#005600]/8 via-transparent to-transparent pointer-events-none z-1 rounded-tr-[2px]" />
 
               {/* Absolute Card Content Overlay */}
-              <div className="absolute inset-0 p-8 flex flex-col justify-between z-10">
+              <div className="relative flex-1 p-8 flex flex-col justify-between z-10">
                 <div>
                   <div className="w-10 h-10 rounded-[2px] bg-[#005600]/8 text-[#005600] flex items-center justify-center mb-4 group-hover:bg-[#005600] group-hover:text-white transition-all duration-300">
                     <Building2 size={20} />

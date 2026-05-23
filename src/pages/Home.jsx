@@ -318,7 +318,6 @@ const Home = () => {
     { title: language === 'en' ? 'G. Os of Finance Department - PENSION – Dearness Allowance to the Pensioners and Family Pensioners – Enhanced Rate' : 'அரசாணை (நிதித் துறை) - ஓய்வூதியம் - ஓய்வூதியதாரர்கள் மற்றும் குடும்ப ஓய்வூதியதாரர்களுக்கான அகவிலைப்படி உயர்த்தப்பட்டது', date: 'May 17, 2026', tag: language === 'en' ? 'G.Os' : 'அரசாணைகள்', isNew: true },
     { title: language === 'en' ? 'Application form for the post of Sign Language Interpretor' : 'சைகை மொழி பெயர்ப்பாளர் பணிக்கான விண்ணப்பப் படிவம்', date: 'May 15, 2026', tag: language === 'en' ? 'Forms' : 'படிவங்கள்', isNew: false },
     { title: language === 'en' ? 'Tamil Nadu Wakf Board Election Form-I' : 'தமிழ்நாடு வக்ஃப் வாரிய தேர்தல் படிவம்-I', date: 'May 12, 2026', tag: language === 'en' ? 'Forms' : 'படிவங்கள்', isNew: false },
-    { title: language === 'en' ? 'Directorate of Adi Dravidar Welfare- Application form for Financial Assistance to the Best Writers' : 'ஆதிதிராவிடர் நல இயக்குநரகம் - சிறந்த எழுத்தாளர்களுக்கான நிதியுதவி விண்ணப்பப் படிவம்', date: 'May 10, 2026', tag: language === 'en' ? 'Schemes' : 'திட்டங்கள்', isNew: false },
     { title: language === 'en' ? 'G.Os of Welfare of Differently Abled Persons Department' : 'மாற்றுத்திறனாளிகள் நலத் துறை அரசாணைகள்', date: 'May 05, 2026', tag: language === 'en' ? 'G.Os' : 'அரசாணைகள்', isNew: false }
   ];
 
@@ -541,9 +540,57 @@ const Home = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-6">
           {[
-            { title: t('home.communityCert'), dept: t('home.revenueDept'), time: language === 'en' ? '15 Days' : '15 நாட்கள்' },
-            { title: t('home.pattaChitta'), dept: t('home.landRecords'), time: language === 'en' ? 'Instant' : 'உடனடி' },
-            { title: t('home.birthCert'), dept: t('home.healthDept'), time: language === 'en' ? 'Online' : 'ஆன்லைன்' },
+            { 
+              title: t('services.cat.grievances'), 
+              dept: language === 'en' ? "Chief Minister's Special Cell" : "முதலமைச்சரின் தனிப்பிரிவு", 
+              time: language === 'en' ? '24/7 Redressal' : '24/7 குறைதீர்ப்பு',
+              path: '/services/grievances',
+              variant: 'orange',
+              hasPixelEffect: true,
+              opacity: 0.45,
+              buttonText: language === 'en' ? 'Raise a Grievance' : 'புகார் அளிக்கவும்',
+              theme: {
+                borderHover: 'hover:border-[#ea580c]/30',
+                gradient: 'from-[#ea580c]/8',
+                deptText: 'text-[#ea580c]',
+                titleHover: 'group-hover:text-[#ea580c]',
+                btnClass: 'btn-primary-orange'
+              }
+            },
+            { 
+              title: t('home.pattaChitta'), 
+              dept: t('home.landRecords'), 
+              time: language === 'en' ? 'Instant' : 'உடனடி', 
+              path: '/services',
+              variant: 'green',
+              hasPixelEffect: true,
+              opacity: undefined,
+              buttonText: t('home.featuredApply'),
+              theme: {
+                borderHover: 'hover:border-[#005600]/20',
+                gradient: 'from-[#005600]/8',
+                deptText: 'text-[#005600]',
+                titleHover: 'group-hover:text-[#005600]',
+                btnClass: 'btn-primary'
+              }
+            },
+            { 
+              title: t('home.birthCert'), 
+              dept: t('home.healthDept'), 
+              time: language === 'en' ? 'Online' : 'ஆன்லைன்', 
+              path: '/services',
+              variant: 'green',
+              hasPixelEffect: true,
+              opacity: undefined,
+              buttonText: t('home.featuredApply'),
+              theme: {
+                borderHover: 'hover:border-[#005600]/20',
+                gradient: 'from-[#005600]/8',
+                deptText: 'text-[#005600]',
+                titleHover: 'group-hover:text-[#005600]',
+                btnClass: 'btn-primary'
+              }
+            },
           ].map((service, index) => (
             <motion.div
               key={index}
@@ -553,20 +600,39 @@ const Home = () => {
               transition={{ delay: index * 0.1 }}
               className="h-[260px]"
             >
-              <PixelCard
-                variant="green"
-                className="group relative overflow-hidden h-full rounded-[2px] border border-black/8 cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] hover:border-[#005600]/20 transition-all duration-300 bg-white"
-              >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#005600]/8 via-transparent to-transparent pointer-events-none z-1 rounded-tr-[2px]" />
-                <div className="absolute inset-0 p-8 flex flex-col justify-between z-10">
-                  <div>
-                    <span className="text-xs text-[#005600] font-semibold uppercase tracking-wider mb-2 inline-block">{service.dept}</span>
-                    <h3 className="text-xl mb-1 font-outfit font-bold text-gray-900 group-hover:text-[#005600] transition-colors">{service.title}</h3>
-                    <p className="text-gray-400 text-xs">{language === 'en' ? 'Processing: ' : 'செயல்முறை நேரம்: '}{service.time}</p>
+              <Link to={service.path} className="block h-full w-full">
+                {service.hasPixelEffect ? (
+                  <PixelCard
+                    variant={service.variant}
+                    opacity={service.opacity}
+                    className={`group relative overflow-hidden h-full rounded-[2px] border border-black/8 cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] ${service.theme.borderHover} transition-all duration-300 bg-white`}
+                  >
+                    <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl ${service.theme.gradient} via-transparent to-transparent pointer-events-none z-1 rounded-tr-[2px]`} />
+                    <div className="absolute inset-0 p-8 flex flex-col justify-between z-10">
+                      <div>
+                        <span className={`text-xs ${service.theme.deptText} font-semibold uppercase tracking-wider mb-2 inline-block`}>{service.dept}</span>
+                        <h3 className={`text-xl mb-1 font-outfit font-bold text-gray-900 ${service.theme.titleHover} transition-colors`}>{service.title}</h3>
+                        <p className="text-gray-400 text-xs">{language === 'en' ? 'Processing: ' : 'செயல்முறை நேரம்: '}{service.time}</p>
+                      </div>
+                      <button className={`${service.theme.btnClass} w-full text-xs py-2 cursor-pointer`}>{service.buttonText}</button>
+                    </div>
+                  </PixelCard>
+                ) : (
+                  <div
+                    className={`group relative overflow-hidden h-full rounded-[2px] border border-black/8 cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] ${service.theme.borderHover} transition-all duration-300 bg-white`}
+                  >
+                    <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl ${service.theme.gradient} via-transparent to-transparent pointer-events-none z-1 rounded-tr-[2px]`} />
+                    <div className="absolute inset-0 p-8 flex flex-col justify-between z-10">
+                      <div>
+                        <span className={`text-xs ${service.theme.deptText} font-semibold uppercase tracking-wider mb-2 inline-block`}>{service.dept}</span>
+                        <h3 className={`text-xl mb-1 font-outfit font-bold text-gray-900 ${service.theme.titleHover} transition-colors`}>{service.title}</h3>
+                        <p className="text-gray-400 text-xs">{language === 'en' ? 'Processing: ' : 'செயல்முறை நேரம்: '}{service.time}</p>
+                      </div>
+                      <button className={`${service.theme.btnClass} w-full text-xs py-2 cursor-pointer`}>{service.buttonText}</button>
+                    </div>
                   </div>
-                  <button className="btn-primary w-full text-xs py-2">{t('home.featuredApply')}</button>
-                </div>
-              </PixelCard>
+                )}
+              </Link>
             </motion.div>
           ))}
         </div>

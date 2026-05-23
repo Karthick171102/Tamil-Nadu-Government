@@ -548,12 +548,14 @@ const GrievancePage = () => {
                 <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">
                   {cn ? 'Track Grievance Status' : 'மனுவின் நிலையை அறிய'}
                 </h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-6">
+                <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
                   {cn
                     ? 'Enter your 11-character Reference ID (e.g. TN-GRV-XXXXXXXX) to view the current progress of your submitted petition.'
                     : 'உங்கள் சமர்ப்பிக்கப்பட்ட மனுவின் தற்போதைய நிலையை அறிய 11-இலக்க குறிப்பு எண்ணை (உதாரணம்: TN-GRV-XXXXXXXX) உள்ளிடவும்.'}
                 </p>
+              </div>
 
+              <div className="mt-auto pt-6">
                 <form
                   onSubmit={async (e) => {
                     e.preventDefault();
@@ -633,24 +635,6 @@ const GrievancePage = () => {
                   </button>
                 </form>
               </div>
-
-              {/* Helper list of mock IDs */}
-              <div className="mt-8 pt-4 border-t border-gray-150 dark:border-white/5">
-                <span className="text-[10px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider block mb-2">
-                  {cn ? 'Demo Reference IDs to Test:' : 'சோதனை செய்ய மாதிரி குறிப்பு எண்கள்:'}
-                </span>
-                <div className="flex flex-wrap gap-2">
-                  {grievances.slice(0, 2).map((g) => (
-                    <button
-                      key={g.id}
-                      onClick={() => { setSearchId(g.id); setSearchError(''); }}
-                      className="px-2 py-1 bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2px] font-mono text-xs text-gray-600 dark:text-gray-300 hover:border-[#ea580c]/40 hover:bg-[#ea580c]/5 hover:text-[#ea580c] transition-all cursor-pointer"
-                    >
-                      {g.id}
-                    </button>
-                  ))}
-                </div>
-              </div>
             </motion.div>
 
             {/* Card 2: File New */}
@@ -667,42 +651,26 @@ const GrievancePage = () => {
                 <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">
                   {cn ? 'File a New Grievance' : 'புதிய புகார் சமர்ப்பிக்க'}
                 </h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-8">
+                <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
                   {cn
                     ? 'Submit a new petition about local civic issues, utilities, roads, or education. Your complaint will be routed directly to your MLA and assigned officer.'
                     : 'உள்ளூர் குடிமைப் பிரச்சனைகள், சாலைகள் அல்லது கல்வி குறித்து புதிய மனுவை சமர்ப்பிக்கவும். உங்கள் புகார் நேரடியாக சட்டமன்ற உறுப்பினர் மற்றும் நியமிக்கப்பட்ட அதிகாரிக்கு அனுப்பப்படும்.'}
                 </p>
-
-                <div className="space-y-4">
-                  <div className="p-4 bg-gray-50 dark:bg-white/3 rounded-[2px] border border-gray-150 dark:border-white/5 space-y-2">
-                    <div className="flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-[#ea580c]" />
-                      <span className="text-xs text-gray-600 dark:text-gray-300 font-medium">
-                        {cn ? 'Automated MLA matching via constituency' : 'தொகுதியின் அடிப்படையில் MLA தானாகவே ஒதுக்கப்படுவார்'}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-[#ea580c]" />
-                      <span className="text-xs text-gray-600 dark:text-gray-300 font-medium">
-                        {cn ? 'Direct routing to district level nodal officer' : 'மாவட்ட அளவிலான நோடல் அதிகாரிக்கு நேரடி வழியமைப்பு'}
-                      </span>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={() => setView('form')}
-                    className="w-full py-3 text-sm font-bold bg-[#ea580c] hover:bg-[#ea580c]/90 text-white rounded-[2px] transition-colors cursor-pointer shadow-md shadow-orange-500/10"
-                  >
-                    {cn ? 'Start New Complaint' : 'புதிய புகாரைத் தொடங்குக'}
-                  </button>
-                </div>
               </div>
 
-              {/* Bottom footer note */}
-              <div className="mt-8 text-center text-xs text-gray-400 dark:text-gray-500 italic select-none">
-                {cn
-                  ? 'All petitions are reviewed under the Citizen Charter rules.'
-                  : 'அனைத்து மனுக்களும் குடிமக்கள் சாசன விதிகளின் கீழ் ஆய்வு செய்யப்படுகின்றன.'}
+              <div className="mt-auto pt-6 space-y-4">
+                <div className="text-center text-xs text-gray-400 dark:text-gray-500 italic select-none">
+                  {cn
+                    ? 'All petitions are reviewed under the Citizen Charter rules.'
+                    : 'அனைத்து மனுக்களும் குடிமக்கள் சாசன விதிகளின் கீழ் ஆய்வு செய்யப்படுகின்றன.'}
+                </div>
+
+                <button
+                  onClick={() => setView('form')}
+                  className="w-full py-3 text-sm font-bold bg-[#ea580c] hover:bg-[#ea580c]/90 text-white rounded-[2px] transition-colors cursor-pointer shadow-md shadow-orange-500/10"
+                >
+                  {cn ? 'Start New Complaint' : 'புதிய புகாரைத் தொடங்குக'}
+                </button>
               </div>
             </motion.div>
 

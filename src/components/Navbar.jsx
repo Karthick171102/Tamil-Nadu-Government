@@ -79,11 +79,9 @@ const submenus = {
   },
   '/schemes': {
     columns: [
-      [
-        { label: 'By Beneficiary',     path: '/schemes' },
-        { label: 'By Category',        path: '/schemes' },
-        { label: 'By Department',      path: '/schemes' },
-      ],
+      [ { label: 'By Beneficiary',     path: '/schemes' } ],
+      [ { label: 'By Category',        path: '/schemes' } ],
+      [ { label: 'By Department',      path: '/schemes' } ],
     ],
   },
   '/documents': {
@@ -414,24 +412,27 @@ const Navbar = ({ hide, isAtTop = true }) => {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 8, scale: 0.98 }}
                         transition={{ duration: 0.2, ease: 'easeOut' }}
-                        className="absolute top-full left-1/2 -translate-x-1/2 mt-4 bg-white/95 backdrop-blur-xl border border-gray-200 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] rounded-[2px] p-6"
+                        className="absolute top-full left-1/2 -translate-x-1/2 mt-4 bg-white/95 dark:bg-[#111811]/95 backdrop-blur-xl border border-gray-200 dark:border-white/10 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] rounded-[2px] p-8"
                         style={{ zIndex: 200 }}
                         onMouseEnter={() => clearTimeout(timeoutRef.current)}
                         onMouseLeave={handleMouseLeave}
                       >
                         {/* Decorative Top Arrow */}
-                        <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white border-t border-l border-gray-200 rotate-45" />
+                        <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white dark:bg-[#111811] border-t border-l border-gray-200 dark:border-white/10 rotate-45" />
 
-                        <div className="grid grid-cols-3 gap-x-6 gap-y-1 relative z-10 w-[720px]">
-                          {submenus[link.path].columns.flat().map((item) => (
-                            <div key={item.label} className="min-w-[200px]">
-                              <Link
-                                to={item.path}
-                                className="group flex items-center justify-between px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-[#005600] hover:bg-[#005600]/5 rounded-[2px] transition-all duration-200 whitespace-nowrap"
-                              >
-                                <span>{translateMenuLabel(item.label)}</span>
-                                <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 text-[#005600]" />
-                              </Link>
+                        <div className="flex gap-x-12 relative z-10">
+                          {submenus[link.path].columns.map((column, colIdx) => (
+                            <div key={colIdx} className="flex flex-col gap-y-2 shrink-0">
+                              {column.map((item) => (
+                                <Link
+                                  key={item.label}
+                                  to={item.path}
+                                  className="group flex items-center justify-between px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-[#005600] dark:hover:text-[#00e000] hover:bg-[#005600]/5 dark:hover:bg-[#00e000]/5 rounded-[2px] transition-all duration-200"
+                                >
+                                  <span className="whitespace-nowrap leading-relaxed text-left">{translateMenuLabel(item.label)}</span>
+                                  <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 text-[#005600] dark:text-[#00e000] shrink-0 ml-3" />
+                                </Link>
+                              ))}
                             </div>
                           ))}
                         </div>

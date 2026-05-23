@@ -74,13 +74,13 @@ const GovernmentHub = () => {
         >
           {filtered.length > 0 ? (
             filtered.map((cat, index) => (
-              <motion.div key={index} variants={fadeInUp} className="h-[200px]">
+              <motion.div key={index} variants={fadeInUp} className="min-h-[200px] flex flex-col">
                 <PixelCard
                   variant="green"
                   className="group relative overflow-hidden h-full rounded-[2px] border border-black/8 cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] hover:border-[#005600]/20 transition-all duration-300 bg-white"
                 >
                   <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#005600]/8 via-transparent to-transparent pointer-events-none z-1 rounded-tr-[2px]" />
-                  <div className="absolute inset-0 p-6 flex flex-col justify-start z-10">
+                  <div className="relative flex-1 p-6 flex flex-col justify-start z-10">
                     <div className="flex items-center justify-between mb-4">
                       <div className="w-10 h-10 rounded-[2px] bg-[#005600]/8 text-[#005600] group-hover:bg-[#005600] group-hover:text-white transition-all duration-300 flex items-center justify-center">
                         <cat.icon size={20} />
